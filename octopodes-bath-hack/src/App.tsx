@@ -14,6 +14,7 @@ function App() {
 
   return (
     <>
+      {pageIndex !== "frontPage" ? <p className="corner-game-name">Algorithmia</p> : null}
       <div className="container-border">
         <div className="bottom-left"></div>
         <div className="bottom-right"></div>

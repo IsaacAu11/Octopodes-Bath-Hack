@@ -62,3 +62,15 @@
     border-bottom: 6px solid #343434;
     border-right: 6px solid #343434;
 }
+
+.corner-game-name {
+    position: absolute;
+    top: 1rem;
+    left: 2rem;
+    font-size: 2rem;
+    font-family: 'Pixelify Sans', sans-serif;
+    color: #ffffff;
+    opacity: 0.3;
+    margin: 1rem;
+    user-select: none;
+}
