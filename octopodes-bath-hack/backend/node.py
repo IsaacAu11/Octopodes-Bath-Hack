@@ -22,18 +22,22 @@ class Node():
         pass
     def is_empty(self):
         pass
+    def json(self):
+        pass
 
 class FullNode(Node):
-    def __init__(self, x, y, name=None, eventType=None, description=None):
+    def __init__(self, x, y, location = None):
         super().__init__(x, y)
-        self.name = name
-        self.description = description
+        self.location = location
+
     def is_empty(self):
         return False
-    def discover(self, name, description):
+    def discover(self, location):
         self.discover = True
-        self.name = name
-        self.description = description
+        self.location = location
+
+    def json(self):
+        return self.location
 
 class EmptyNode(Node):
     def __init__(self, x, y, name=None, eventType=None, description=None):
@@ -41,6 +45,11 @@ class EmptyNode(Node):
         self.discovered = True
     def is_empty(self):
         return True
+    def json(self):
+        location = {"location" : "",
+                    "description" : "",
+                    "characters" : []}
+        return location
 
 class Map():
     def __init__(self):
@@ -51,6 +60,7 @@ class Map():
         self.cols_added_right = 0
         self.rows_added_above = 0
         self.rows_added_below = 0
+        self.map[0][0] = FullNode(0, 0)
     def getcell(self, x,y):
         return self.map[x + self.cols_added_left][y + self.rows_added_below]
     def cartesian_to_index(self, x, y):
@@ -128,9 +138,9 @@ class Map():
 
     
 class NodeGenerator():
-    def __init__(self, names = [], descriptions = []):
-        self.names = names
-        self.descriptions = descriptions
+    def __init__(self):
+        pass
+
 
     #expects a list of names and a list of descriptions of size 4
     def generate_nodes(self, map, currentnode):
@@ -159,17 +169,55 @@ class NodeGenerator():
             else:
                 map.placenode(x,y, location, EmptyNode(newX, newY))
         
-    def get_new_generated_names(self, names, descriptions):
-        self.names.append(names)
-        self.descriptions.append(descriptions)
     
 
 class Game():
-    def __init__(self, initialprompt, locations, characters):
+    def __init__(self):
         self.current_x = 0
         self.current_y = 0
-
+        self.locations = []
+        self.characters = []
+        self.map = Map()
+    def start(self, locations, characters):
+        self.locations = locations
+        self.characters = characters
+        currentCell = self.map.getcell(self.current_x, self.current_y)
+        currentCell.discover(self.locations[0])
+        print(self.locations)
+        print(self.locations[0])
+        print("hi")
+        self.locations.pop(0)
+        return self.return_state(currentCell)
 
     def move(self, changeX, changeY):
-        pass
+        currentCell = self.map.getcell(self.current_x + changeX, self.current_y + changeY)
+        if currentCell.get_discovered():
+            return self.return_state(currentCell)
+        else:
+            num = random.randint(0, len(self.locations) - 1)
+            currentCell.discover(self.locations[num])
+            self.locations.pop(num)
+            return self.return_state(currentCell)
+
+                    
+    def return_state(self, x, y):
+
+        json_map = {"locations": {
+            "[0, 0]": self.map.getcell(x-1, y-1),
+            "[1, 0]": self.map.getcell(x, y-1),
+            "[2, 0]": self.map.getcell(x+1, y-1),
+            "[0, 1]": self.map.getcell(x-1, y),
+            "[1, 1]": self.map.getcell(x, y),
+            "[2, 1]": self.map.getcell(x+1, y),
+            "[0, 2]": self.map.getcell(x-1, y+1),
+            "[1, 2]": self.map.getcell(x, y+1),
+            "[2, 2]": self.map.getcell(x+1, y+1),
+            
+            },
+            "characters" : self.characters,
+            "num_locations" : len(self.locations)
+        }
+        return json_map
+
+
         
