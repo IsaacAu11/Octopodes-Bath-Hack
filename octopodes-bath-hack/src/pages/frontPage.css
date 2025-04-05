@@ -1,16 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@100;300;400;500;700;800;900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Pixelify+Sans:wght@400..700&family=Underdog&display=swap');
 
-#root {
-    margin: 0 auto;
-    padding: 2rem;
+.container {
+    margin: 0;
+    padding: 0;
     user-select: none;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    text-align: center;
+    position: relative;
 }
 
 .title {
     font-size: 4.5rem;
     margin-bottom: 10rem;
     font-family: 'Pixelify Sans', sans-serif;
-    transition: transform 0.3s ease-in-out, opacity 1s ease-in-out;
+    transition: transform 1s ease-in-out, opacity 1s ease-in-out;
     user-select: none;
     animation: bounce 2s infinite ease-in-out;
 }
@@ -25,7 +33,7 @@
 } */
 
 .title.on-front-page {
-    transform: translateY(-100rem);
+    transform: translateY(-150vh);
     opacity: 0;
 }
 
@@ -38,11 +46,11 @@
     color: white;
     font-size: 1rem;
     position: absolute;
-    transition: bottom 0.3s ease-in-out;
+    transition: transform 1s ease-in-out, opacity 1s ease-in-out;
     bottom: 40%
 }
 
 .input.on-front-page {
-    background-color: aquamarine;
-    bottom: 2rem; /* Adjust position when active */
+    transform: translateY(150vh);
+    opacity: 0;    
 }
