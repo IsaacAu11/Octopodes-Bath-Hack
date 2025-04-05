@@ -1,11 +1,11 @@
 // mainPage.tsx
-import { useEffect, useState } from 'react';
+import {useState } from 'react';
 import './mainPage.css';
-import LoadingPage from './loadingPage';
+//import LoadingPage from './loadingPage';
 import { Backpack2 } from 'react-bootstrap-icons';
 import InventoryModal from '../modals/inventoryModal';
 import currentMap from '../assets/map/currentMap.json';
-import AsciiArt from '../AsciiArt';
+//import AsciiArt from '../components/AsciiArt';
 import DialogueModal from '../modals/dialogueModal';
 
 type MapKey = '[0, 0]' | '[1, 0]' | '[2, 0]' | '[0, 1]' | '[1, 1]' | '[2, 1]' | '[0, 2]' | '[1, 2]' | '[2, 2]';
