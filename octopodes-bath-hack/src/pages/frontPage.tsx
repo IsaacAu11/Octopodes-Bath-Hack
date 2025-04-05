@@ -1,14 +1,17 @@
-// FrontPage.tsx
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './frontPage.css';
+import { processMessage } from '../components/ChatProcessor';
 
 function FrontPage({ onEnter }: { onEnter: () => void }) {
     const [isOnFrontPage, setIsOnFrontPage] = useState(true);
+    const [userInput, setUserInput] = useState('');
     
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             e.preventDefault();
-            setIsOnFrontPage(false); // Switch to the main page
+            const result = await processMessage(userInput);
+            console.log('ChatGPT Response:', result);
+            setIsOnFrontPage(false);
             setTimeout(() => {
                 onEnter();
             }, 1000);
@@ -26,10 +29,10 @@ function FrontPage({ onEnter }: { onEnter: () => void }) {
                         className={`input ${isOnFrontPage ? '' : 'on-front-page'}`} 
                         placeholder="Describe your story..." 
                         onKeyDown={handleKeyDown}
-                        
+                        value={userInput}
+                        onChange={(e) => setUserInput(e.target.value)}
                     />
                 </div>
-
                 <p className="credits">
                     Credits: Nathan Wong, Isaac Au, Oliver Claussnitzer-Brown
                 </p>
@@ -38,4 +41,4 @@ function FrontPage({ onEnter }: { onEnter: () => void }) {
     );
 }
 
-export default FrontPage;
+export default FrontPage; 

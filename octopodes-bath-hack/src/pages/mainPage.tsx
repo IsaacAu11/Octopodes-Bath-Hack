@@ -87,7 +87,6 @@ function MainPage() {
             )}
 
             <div className="center-container">
-
                 <h1 className="location-title">You are at: {currentMap['[1, 1]']?.locationName || 'Unknown...'}</h1>
 
                 <div className="side-list">

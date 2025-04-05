@@ -7,7 +7,7 @@ const client = new OpenAI({
   dangerouslyAllowBrowser: true 
 });
 
-export async function processMessage(message: string): Promise<{ response: string; keywords: string[][] }> {
+ export async function processMessage(message: string): Promise<{ response: string; keywords: string[][] }> {
   try {
     const completion = await client.chat.completions.create({
       model: "gpt-3.5-turbo-1106",
