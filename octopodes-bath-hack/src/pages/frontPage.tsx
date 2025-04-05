@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './frontPage.css';
-
+import TestAscii from '../TestAscii';
 function FrontPage() {
     const [isOnFrontPage, setIsOnFrontPage] = useState(true);
     
@@ -19,6 +19,7 @@ function FrontPage() {
                     }
                 }}
             />
+            <TestAscii />
         </>
     );
 }
