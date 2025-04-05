@@ -11,20 +11,20 @@ import DialogueModal from '../modals/dialogueModal';
 type MapKey = '[0, 0]' | '[1, 0]' | '[2, 0]' | '[0, 1]' | '[1, 1]' | '[2, 1]' | '[0, 2]' | '[1, 2]' | '[2, 2]';
 
 function MainPage() {
-    const [loading, setLoading] = useState(true);
+
     const [isTyping, setIsTyping] = useState(false);
     const [showInventory, setShowInventory] = useState(false);
     const [dialogueHistory, setDialogueHistory] = useState<{ text: string; sender: string }[]>([]);
     const [character, setCharacter] = useState<{ name: string; imageURL: string } | null>(null);
     const [showDialogueModal, setShowDialogueModal] = useState(false);
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setLoading(false);
-        }, 2000);
+    // useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         setLoading(false);
+    //     }, 2000);
 
-        return () => clearTimeout(timer);
-    }, []);
+    //     return () => clearTimeout(timer);
+    // }, []);
 
     const renderGrid = () => {
         const grid = [];
@@ -60,12 +60,6 @@ function MainPage() {
 
                 {showInventory && <InventoryModal onClose={() => setShowInventory(false)} />}
             </div>
-
-            {loading && (
-                <div className="loading-overlay">
-                    <LoadingPage />
-                </div>
-            )}
 
             <div className="center-container">
 
