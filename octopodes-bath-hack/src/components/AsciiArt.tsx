@@ -20,7 +20,8 @@ const AsciiArt: React.FC<AsciiArtProps> = ({ imageUrl, width = 100, height = 50,
   const [error, setError] = useState<string | null>(null);
 
   const getAsciiChar = (intensity: number): string => {
-    const asciiChars = '@%#*+=-:. ';
+    // const asciiChars = '@%#*+=-:. ';
+    const asciiChars = '■';
     const index = Math.floor((intensity * (asciiChars.length - 1)) / 255);
     return asciiChars[index];
   };

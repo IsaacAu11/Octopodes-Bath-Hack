@@ -5,6 +5,8 @@ import LoadingPage from './loadingPage';
 import { Backpack2 } from 'react-bootstrap-icons';
 import InventoryModal from '../modals/inventoryModal';
 import currentMap from '../assets/map/currentMap.json';
+import AsciiArt from '../AsciiArt';
+import DialogueModal from '../modals/dialogueModal';
 
 type MapKey = '[0, 0]' | '[1, 0]' | '[2, 0]' | '[0, 1]' | '[1, 1]' | '[2, 1]' | '[0, 2]' | '[1, 2]' | '[2, 2]';
 
@@ -13,11 +15,13 @@ function MainPage() {
     const [isTyping, setIsTyping] = useState(false);
     const [showInventory, setShowInventory] = useState(false);
     const [dialogueHistory, setDialogueHistory] = useState<{ text: string; sender: string }[]>([]);
+    const [character, setCharacter] = useState<{ name: string; imageURL: string } | null>(null);
+    const [showDialogueModal, setShowDialogueModal] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoading(false);
-        }, 1000);
+        }, 2000);
 
         return () => clearTimeout(timer);
     }, []);
@@ -37,6 +41,11 @@ function MainPage() {
             }
         }
         return grid;
+    };
+
+    const handleDialogueClick = (character: string, imageURL: string) => {
+        setCharacter({ name: character, imageURL });
+        setShowDialogueModal(true);
     };
 
     return (
@@ -64,17 +73,17 @@ function MainPage() {
 
                 <div className="side-list">
                     <p className="side-list-title">Characters</p>
-                    <div className="side-list-item">
+                    <div className="side-list-item" onClick={() => handleDialogueClick("John the Pirate", "https://media.istockphoto.com/id/500081100/photo/portrait-of-handsome-man-in-a-pirate-costume.jpg?s=612x612&w=0&k=20&c=9OMffCTusV-wovYnuolcZ0tgpc_4sR8wY2r2vlJOnPw=")}>
                         John
                     </div>
-                    <div className="side-list-item">
+                    <div className="side-list-item" onClick={() => handleDialogueClick("Sarah the Merchant", "https://pics.craiyon.com/2023-06-02/2f06130136ca4d9197864bdb53f2111b.webp")}>
                         Sarah
                     </div>
                     <div className="side-list-item">
                         Mark
                     </div>
                 </div>
-
+                
                 <div className="grid-container">
                     {renderGrid()}
                 </div>
@@ -102,7 +111,7 @@ function MainPage() {
                     </div>
                 </div>
 
-                {!showInventory && (
+                {/* {(!showDialogueModal || !showInventory) && (
                     <input
                         type="text"
                         className="input"
@@ -113,15 +122,25 @@ function MainPage() {
                                 if (inputValue.trim()) {
                                     setDialogueHistory((prev) => [
                                         ...prev,
-                                        { text: inputValue, sender: 'User' }, // Replace 'User' with the sender's name
+                                        { text: inputValue, sender: 'User' },
                                     ]);
-                                    (e.target as HTMLInputElement).value = ''; // Clear the input field
+                                    (e.target as HTMLInputElement).value = ''; 
                                 }
                             }
                         }}
                         onFocus={() => setIsTyping(true)}
                         onBlur={() => setIsTyping(false)}
                     />
+                )} */}
+                {showDialogueModal ? (
+                    <DialogueModal onClose={() => {
+                        setCharacter(null);
+                        setShowDialogueModal(false);
+                    }} 
+                    character={character}
+                    />
+                ) : (
+                    <div />
                 )}
             </div>
         </div>
