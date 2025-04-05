@@ -4,8 +4,9 @@ import './mainPage.css';
 import LoadingPage from './loadingPage';
 import { Backpack2 } from 'react-bootstrap-icons';
 import InventoryModal from '../modals/inventoryModal';
-import currentMap from '../assets/map/currentMap.json';
+
 import { processMessage } from '../components/ChatProcessor';
+import currentMap from '../assets/map/currentMap.json';
 
 type MapKey = '[0, 0]' | '[1, 0]' | '[2, 0]' | '[0, 1]' | '[1, 1]' | '[2, 1]' | '[0, 2]' | '[1, 2]' | '[2, 2]';
 
