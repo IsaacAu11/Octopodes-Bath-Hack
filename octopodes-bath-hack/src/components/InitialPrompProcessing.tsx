@@ -61,6 +61,8 @@ Format the response as a valid JSON object with this exact structure:
       storyline: response.storyline
     };
 
+    localStorage.setItem('storyline', storyElements.storyline);
+
     return storyElements;
 
   } catch (error) {

@@ -4,20 +4,20 @@ import { initalPromptProcessing } from '../components/InitialPrompProcessing';
 import LoadingPage from './loadingPage';
 
 function FrontPage({ onEnter }: { onEnter: () => void }) {
-    const [isOnFrontPage, setIsOnFrontPage] = useState(true);
     const [userInput, setUserInput] = useState('');
     const [loading, setLoading] = useState(false);
+    const [anim, setAnim] = useState(false);
     
     const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            setLoading(true);
+            setAnim(true);
             e.preventDefault();
+            setTimeout(() => {
+                setLoading(true);
+            }, 1000);
             const result = await initalPromptProcessing(userInput);
             console.log('ChatGPT Response:', result);
-            setIsOnFrontPage(false);
-            setTimeout(() => {
-                onEnter();
-            }, 1000);
+            onEnter();
             setLoading(false);
         }
     }
@@ -25,12 +25,12 @@ function FrontPage({ onEnter }: { onEnter: () => void }) {
     return (
         <>  
             <div className="container">
-                <h1 className="game-name" >GAME NAME</h1>
-                <h1 className={`front-page-title ${isOnFrontPage ? '' : 'on-front-page'}`} >Start your story:</h1>
-                <div className={`input-container ${isOnFrontPage ? '' : 'on-front-page'}`}>
+                <h1 className="game-name" >Algorithmia</h1>
+                <h1 className={`front-page-title ${!anim ? '' : 'loading'}`} >Start your story:</h1>
+                <div className={`input-container ${!anim ? '' : 'loading'}`}>
                     <input 
                         type="text" 
-                        className={`input ${isOnFrontPage ? '' : 'on-front-page'}`} 
+                        className={`input ${!anim ? '' : 'loading'}`} 
                         placeholder="Describe your story..." 
                         onKeyDown={handleKeyDown}
                         value={userInput}
