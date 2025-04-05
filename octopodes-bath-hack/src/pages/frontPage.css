@@ -13,6 +13,7 @@
     align-items: center; 
     text-align: center;
     position: relative;
+    font-family: 'Pixelify Sans', sans-serif;
 }
 
 .front-page-title {
@@ -24,7 +25,7 @@
     animation: bounce 2s infinite ease-in-out;
 }
 
-.front-page-title.on-front-page {
+.front-page-title.loading {
     transform: translateY(-150vh);
     opacity: 0;
 }
@@ -66,7 +67,7 @@
     transition: transform 1s ease-in-out, opacity 1s ease-in-out;
 }
 
-.input-container.on-front-page {
+.input-container.loading {
     transform: translateY(150vh);
     opacity: 0;    
 }

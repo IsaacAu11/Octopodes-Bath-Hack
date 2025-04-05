@@ -1,20 +1,19 @@
 // mainPage.tsx
 import { useEffect, useState } from 'react';
 import './mainPage.css';
-import LoadingPage from './loadingPage';
-import { Backpack2 } from 'react-bootstrap-icons';
+import { Backpack2, Book } from 'react-bootstrap-icons';
 import InventoryModal from '../modals/inventoryModal';
 import currentMap from '../assets/map/currentMap.json';
-import AsciiArt from '../AsciiArt';
 import DialogueModal from '../modals/dialogueModal';
+import StoryLineModal from '../modals/storyLineModal';
 
 type MapKey = '[0, 0]' | '[1, 0]' | '[2, 0]' | '[0, 1]' | '[1, 1]' | '[2, 1]' | '[0, 2]' | '[1, 2]' | '[2, 2]';
 
 function MainPage() {
-
-    const [isTyping, setIsTyping] = useState(false);
+    // const [isTyping, setIsTyping] = useState(false);
     const [showInventory, setShowInventory] = useState(false);
-    const [dialogueHistory, setDialogueHistory] = useState<{ text: string; sender: string }[]>([]);
+    const [showStoryLine, setShowStoryLine] = useState(true);
+    // const [dialogueHistory, setDialogueHistory] = useState<{ text: string; sender: string }[]>([]);
     const [character, setCharacter] = useState<{ name: string; imageURL: string } | null>(null);
     const [showDialogueModal, setShowDialogueModal] = useState(false);
 
@@ -52,11 +51,14 @@ function MainPage() {
         <div className="main-page-container">
             <div className="navbar">
                 {/* Inventory button + modal */}
-                {!showInventory && 
-                    <div className="navbar-item" onClick={() => setShowInventory(true)}>
-                        <Backpack2 size={40} color="#a8a8a8" />
-                    </div>
-                }
+                <div className="navbar-item" onClick={() => setShowInventory(true)}>
+                    <Backpack2 size={40} color="#a8a8a8" />
+                </div>
+
+                <div className="navbar-item" onClick={() => setShowStoryLine(true)}>
+                    <Book size={40} color="#a8a8a8" />
+                </div>
+
 
                 {showInventory && <InventoryModal onClose={() => setShowInventory(false)} />}
             </div>
@@ -82,7 +84,7 @@ function MainPage() {
                     {renderGrid()}
                 </div>
                 
-                {isTyping && (
+                {/* {isTyping && (
                     <div className={`dialogue-history ${isTyping ? 'typing' : ''}`}>
                         {dialogueHistory.map((dialogue, index) => (
                             <div key={index} className="dialogue-bubble">
@@ -90,7 +92,7 @@ function MainPage() {
                             </div>
                         ))}
                     </div>
-                )}
+                )} */}
 
                 <div className="side-list">
                     <p className="side-list-title">Actions</p>
@@ -136,6 +138,9 @@ function MainPage() {
                 ) : (
                     <div />
                 )}
+
+                {showStoryLine ? (<StoryLineModal onClose={() => {setShowStoryLine(false)}} />) : (<div />)}
+
             </div>
         </div>
     );
