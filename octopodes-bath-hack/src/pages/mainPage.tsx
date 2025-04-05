@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import './mainPage.css';
 import LoadingPage from './loadingPage';
+import { Backpack2 } from 'react-bootstrap-icons';
+import InventoryModal from '../modals/inventoryModal';
 import { processMessage } from '../components/ChatProcessor';
 
 function MainPage() {
     const [loading, setLoading] = useState(true);
     const [inputValue, setInputValue] = useState('');
+    const [isTyping, setIsTyping] = useState(false);
+    const [showInventory, setShowInventory] = useState(false);
+    const [dialogueHistory, setDialogueHistory] = useState<{ text: string; sender: string }[]>([]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoading(false);
-        }, 5000);
+        }, 1000);
 
         return () => clearTimeout(timer);
     }, []);
@@ -34,7 +39,9 @@ function MainPage() {
     return (
         <div className="main-page-container">
             <div className="navbar">
+
             </div>
+
             {loading && (
                 <div className="loading-overlay">
                     <LoadingPage />
@@ -47,13 +54,10 @@ function MainPage() {
                     type="text" 
                     className="input" 
                     placeholder="Dialogue" 
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    onKeyDown={handleKeyDown}
                 />
             </div>
         </div>
     );
 }
 
-export default MainPage; 
+export default MainPage;

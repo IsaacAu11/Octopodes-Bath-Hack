@@ -5,6 +5,7 @@
   },
   "dependencies": {
     "get-pixels": "^3.3.3",
-    "openai": "^4.91.1"
+    "openai": "^4.91.1",
+    "react-bootstrap-icons": "^1.11.5"
   }
 }
