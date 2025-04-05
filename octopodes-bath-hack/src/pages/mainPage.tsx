@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import './mainPage.css';
 import LoadingPage from './loadingPage';
+import { Backpack2 } from 'react-bootstrap-icons';
 
 function MainPage() {
     const [loading, setLoading] = useState(true);
@@ -9,7 +10,7 @@ function MainPage() {
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoading(false);
-        }, 5000);
+        }, 2000);
 
         return () => clearTimeout(timer);
     }, []);
@@ -18,7 +19,14 @@ function MainPage() {
     return (
         <div className="main-page-container">
             <div className="navbar">
+                {/* Inventory button + modal*/}
+                {/* Bag icon using react bootstrap icon */}
+                <div className="navbar-item" onClick={() => console.log('Inventory clicked')}>
+                    <Backpack2 size={24} color="white" />
+                </div>
+                
 
+                
             </div>
             {loading && (
                 <div className="loading-overlay">

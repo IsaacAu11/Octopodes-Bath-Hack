@@ -8,6 +8,7 @@
     height: 100vh;
     overflow: hidden;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center; 
     text-align: center;
@@ -16,10 +17,10 @@
 
 .title {
     font-size: 4.5rem;
-    margin-bottom: 10rem;
     font-family: 'Pixelify Sans', sans-serif;
     transition: transform 1s ease-in-out, opacity 1s ease-in-out;
     user-select: none;
+    margin-bottom: 2rem;
     animation: bounce 2s infinite ease-in-out;
 }
 
@@ -45,12 +46,15 @@
     background-color: #373737;
     color: white;
     font-size: 1rem;
-    position: absolute;
-    transition: transform 1s ease-in-out, opacity 1s ease-in-out;
-    bottom: 40%
 }
 
-.input.on-front-page {
+.input-container {
+    position: relative;
+    transform: translateX(-50%);
+    transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+}
+
+.input-container.on-front-page {
     transform: translateY(150vh);
     opacity: 0;    
 }

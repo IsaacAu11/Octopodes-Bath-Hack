@@ -19,13 +19,16 @@ function FrontPage({ onEnter }: { onEnter: () => void }) {
         <>  
             <div className="container">
                 <h1 className={`title ${isOnFrontPage ? '' : 'on-front-page'}`} >Start your story:</h1>
+                <div className={`input-container ${isOnFrontPage ? '' : 'on-front-page'}`}>
+                    <input 
+                        type="text" 
+                        className={`input ${isOnFrontPage ? '' : 'on-front-page'}`} 
+                        placeholder="Enter your story here..." 
+                        onKeyDown={handleKeyDown}
+                    />
+                </div>
 
-                <input 
-                    type="text" 
-                    className={`input ${isOnFrontPage ? '' : 'on-front-page'}`} 
-                    placeholder="Enter your story here..." 
-                    onKeyDown={handleKeyDown}
-                />
+
             </div>
         </>
     );
