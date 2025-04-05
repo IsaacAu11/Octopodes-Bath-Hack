@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "@types/get-pixels": "^3.3.4",
+    "@types/node": "^22.14.0"
+  },
+  "dependencies": {
+    "get-pixels": "^3.3.3"
+  }
+}
