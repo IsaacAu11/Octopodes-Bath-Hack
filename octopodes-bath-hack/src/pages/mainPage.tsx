@@ -4,7 +4,7 @@ import './mainPage.css';
 import LoadingPage from './loadingPage';
 import { Backpack2 } from 'react-bootstrap-icons';
 import InventoryModal from '../modals/inventoryModal';
-
+import currentMap from '../assets/map/currentMap.json';
 
 type MapKey = '[0, 0]' | '[1, 0]' | '[2, 0]' | '[0, 1]' | '[1, 1]' | '[2, 1]' | '[0, 2]' | '[1, 2]' | '[2, 2]';
 
@@ -22,6 +22,22 @@ function MainPage() {
         return () => clearTimeout(timer);
     }, []);
 
+    const renderGrid = () => {
+        const grid = [];
+        for (let y = 0; y < 3; y++) {
+            for (let x = 0; x < 3; x++) {
+                const key = `[${x}, ${y}]`;
+                const cell = currentMap[key as MapKey];
+                grid.push(
+                    <div className="grid-cell" key={key}>
+                        <div className="cell-location">{cell?.locationName}</div>
+                        <div className="cell-travel">{cell?.information}</div>
+                    </div>
+                );
+            }
+        }
+        return grid;
+    };
 
     return (
         <div className="main-page-container">
@@ -42,8 +58,26 @@ function MainPage() {
                 </div>
             )}
 
-            <div className={`content ${loading ? 'hidden' : ''}`}>
-                <h1 className="title">MAIN PAGE</h1>
+            <div className="center-container">
+
+                <h1 className="location-title">You are at: {currentMap['[1, 1]']?.locationName || 'Unknown...'}</h1>
+
+                <div className="side-list">
+                    <p className="side-list-title">Characters</p>
+                    <div className="side-list-item">
+                        John
+                    </div>
+                    <div className="side-list-item">
+                        Sarah
+                    </div>
+                    <div className="side-list-item">
+                        Mark
+                    </div>
+                </div>
+
+                <div className="grid-container">
+                    {renderGrid()}
+                </div>
                 
                 {isTyping && (
                     <div className={`dialogue-history ${isTyping ? 'typing' : ''}`}>
@@ -54,6 +88,19 @@ function MainPage() {
                         ))}
                     </div>
                 )}
+
+                <div className="side-list">
+                    <p className="side-list-title">Actions</p>
+                    <div className="side-list-item">
+                        Fight
+                    </div>
+                    <div className="side-list-item">
+                        Shop
+                    </div>
+                    <div className="side-list-item">
+                        Eat
+                    </div>
+                </div>
 
                 {!showInventory && (
                     <input
