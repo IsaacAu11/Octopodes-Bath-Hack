@@ -1,0 +1,69 @@
+.inventory-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.overlay.open {
+    opacity: 1;
+}
+
+.overlay.closing {
+    opacity: 0;
+}
+
+
+.inventory-modal {
+    position: absolute;
+    background-color: #454545;
+    border-radius: 1rem;
+    padding: 2rem;
+    width: 40%;
+    height: 60%;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(100%);
+    transition: transform 0.3s ease-out;
+    font-family: 'Pixelify Sans', sans-serif;
+}
+
+.inventory-modal.open {
+    transform: translateY(0); /* Modal moves up */
+}
+
+.inventory-modal.closing {
+    transform: translateY(150%); /* Modal moves back down */
+}
+
+.close-button {
+    position: absolute;
+    top: 0rem;
+    right: 0rem;
+    margin: 3rem;
+    cursor: pointer;
+}
+
+.modal-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    font-family: 'Pixelify Sans', sans-serif;
+    user-select: none;
+    margin-top: -0.5rem;
+}

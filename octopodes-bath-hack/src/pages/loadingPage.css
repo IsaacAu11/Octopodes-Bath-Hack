@@ -59,3 +59,37 @@
     text-align: center;
     position: relative;
 }
+
+
+.container-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 5px solid #484848;
+    box-sizing: border-box;
+    pointer-events: none;
+    margin: 1rem;
+}
+
+.game-name {
+    font-size: 10rem;
+    font-family: 'Pixelify Sans', sans-serif;
+    transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+    user-select: none;
+    position: absolute;
+    top: 5%;
+    animation: bounce 2s infinite ease-in-out;
+}
+
+.credits {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5rem;
+    color: #848484;
+    font-family: 'Pixelify Sans', sans-serif;
+    user-select: none;
+}
