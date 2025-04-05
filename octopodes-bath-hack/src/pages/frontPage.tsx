@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import './frontPage.css';
 import { initalPromptProcessing } from '../components/InitialPrompProcessing';
+import LoadingPage from './loadingPage';
 
 function FrontPage({ onEnter }: { onEnter: () => void }) {
     const [isOnFrontPage, setIsOnFrontPage] = useState(true);
     const [userInput, setUserInput] = useState('');
+    const [loading, setLoading] = useState(false);
     
     const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
+            setLoading(true);
             e.preventDefault();
             const result = await initalPromptProcessing(userInput);
             console.log('ChatGPT Response:', result);
@@ -15,6 +18,7 @@ function FrontPage({ onEnter }: { onEnter: () => void }) {
             setTimeout(() => {
                 onEnter();
             }, 1000);
+            setLoading(false);
         }
     }
 
@@ -37,6 +41,11 @@ function FrontPage({ onEnter }: { onEnter: () => void }) {
                     Credits: Nathan Wong, Isaac Au, Oliver Claussnitzer-Brown
                 </p>
             </div>
+            {loading && (
+                <div className="loading-overlay">
+                    <LoadingPage />
+                </div>
+            )}
         </>
     );
 }
