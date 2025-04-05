@@ -165,6 +165,11 @@ class NodeGenerator():
     
 
 class Game():
-    def __init__(initialprompt):
-        pass
+    def __init__(self, initialprompt, locations, characters):
+        self.current_x = 0
+        self.current_y = 0
 
+
+    def move(self, changeX, changeY):
+        pass
+        
