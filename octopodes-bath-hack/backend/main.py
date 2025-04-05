@@ -14,7 +14,7 @@ def get_game():
 app = FastAPI()
 @app.post("/start")
 def start(locations : List[List[Union[str, List[str]]]], characters : list[list[str]], instance: Game = Depends(get_game)):
-    instance.start(locations, characters)
+    return {instance.start(locations, characters)}
 @app.get("/move")
 def move(x: int, y: int, instance: Game = Depends(get_game)):
     return {instance.move(x, y)}

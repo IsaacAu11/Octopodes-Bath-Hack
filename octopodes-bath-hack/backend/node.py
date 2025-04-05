@@ -1,4 +1,5 @@
 import random
+import json
 """
 N = 0
 NE = 1
@@ -60,7 +61,7 @@ class Map():
         self.cols_added_right = 0
         self.rows_added_above = 0
         self.rows_added_below = 0
-        self.map[0][0] = FullNode(0, 0)
+        self.map[4][4] = FullNode(4, 4)
     def getcell(self, x,y):
         return self.map[x + self.cols_added_left][y + self.rows_added_below]
     def cartesian_to_index(self, x, y):
@@ -83,23 +84,29 @@ class Map():
                 neighbours[5] = self.getcell(y+1,x-1)
         if x > 0 - self.cols_added_left:
             neighbours[6] = self.getcell(y,x-1)
-        if x < len(self.map[y])-self.cols_added_right-1:
+        if x < len(self.map[0])-self.cols_added_right-1:
             neighbours[2] = self.getcell(y,x+1)
         return neighbours
+    def __str__(self):
+        s = ""
+        for line in self.map:
+            s += str(line) + "\n"
+        return s
+
     
     # places a node next to the x,y node dependent on the location parameter as defined at the start
     def placenode(self, x, y, location, node):
-        xadj, yadj = self.get_adjustment(location)
+        xadj, yadj = get_adjustment(location)
         ix, iy = self.cartesian_to_index(x, y)
-        if ix + xadj < 0:
+        if ix + xadj < 0 - self.cols_added_left:
             self.add_col_left()
             ix, iy = self.cartesian_to_index(x, y)
-        if iy + yadj < 0:
+        if iy + yadj < 0 - self.rows_added_above:
             self.add_row_above()
             ix, iy = self.cartesian_to_index(x, y)
-        if ix + xadj  == len(self.map[0]):
+        if ix + xadj  == len(self.map[0])-self.cols_added_right-1:
             self.add_col_right()
-        if iy + yadj  == len(self.map):
+        if iy + yadj  == len(self.map)-self.cols_added_left - 1:
             self.add_row_below()
         self.map[xadj + ix][yadj + iy] = node
 
@@ -118,32 +125,30 @@ class Map():
     def add_col_right(self):
         for row in self.map:
             row.append(None)
-    def get_adjustment(location):
-        if location == 0:
-            return 0, -1
-        if location == 1:
-            return 1, -1
-        if location == 2:
-            return 1, 0
-        if location == 3:
-            return 1, 1
-        if location == 4:
-            return 0, 1
-        if location == 5:
-            return -1, 1
-        if location == 6:
-            return -1, 0
-        if location == 7:
-            return -1, -1
+            
+def get_adjustment(location):
+    if location == 0:
+        return 0, -1
+    if location == 1:
+        return 1, -1
+    if location == 2:
+        return 1, 0
+    if location == 3:
+        return 1, 1
+    if location == 4:
+        return 0, 1
+    if location == 5:
+        return -1, 1
+    if location == 6:
+        return -1, 0
+    if location == 7:
+        return -1, -1
 
     
 class NodeGenerator():
-    def __init__(self):
-        pass
-
-
     #expects a list of names and a list of descriptions of size 4
-    def generate_nodes(self, map, currentnode):
+    @staticmethod
+    def generate_nodes(map, currentnode):
         x, y = currentnode.get_location()
         neighbours = map.calculate_neighbours(currentnode)
         num_spaces = 4
@@ -159,9 +164,12 @@ class NodeGenerator():
         num = 0
         if num_spaces > 0:
             num = random.randint(1, num_spaces)
-        locations_to_place = random.sample(placable_nodes, num)
+        #locations_to_place = random.sample(placable_nodes, num)
+        locations_to_place = random.sample(placable_nodes, 4)
+        print(locations_to_place)
         for location in placable_nodes:
-            newX, newY = map.get_adjustment(location)
+            print(location)
+            newX, newY = get_adjustment(location)
             newX += x
             newY += y
             if location in locations_to_place:
@@ -173,24 +181,27 @@ class NodeGenerator():
 
 class Game():
     def __init__(self):
-        self.current_x = 0
-        self.current_y = 0
+        self.current_x = 4
+        self.current_y = 4
         self.locations = []
         self.characters = []
         self.map = Map()
+        
     def start(self, locations, characters):
         self.locations = locations
+        print(self.locations)
         self.characters = characters
         currentCell = self.map.getcell(self.current_x, self.current_y)
+        print(currentCell)
         currentCell.discover(self.locations[0])
-        print(self.locations)
-        print(self.locations[0])
-        print("hi")
         self.locations.pop(0)
-        return self.return_state(currentCell)
+        NodeGenerator.generate_nodes(self.map, currentCell)
+        #return self.return_state(0, 0)
+        return self.return_state(4, 4)
 
     def move(self, changeX, changeY):
         currentCell = self.map.getcell(self.current_x + changeX, self.current_y + changeY)
+        NodeGenerator.generate_nodes(self.map, currentCell)
         if currentCell.get_discovered():
             return self.return_state(currentCell)
         else:
@@ -201,23 +212,24 @@ class Game():
 
                     
     def return_state(self, x, y):
-
+        print(self.map)
         json_map = {"locations": {
-            "[0, 0]": self.map.getcell(x-1, y-1),
-            "[1, 0]": self.map.getcell(x, y-1),
-            "[2, 0]": self.map.getcell(x+1, y-1),
-            "[0, 1]": self.map.getcell(x-1, y),
-            "[1, 1]": self.map.getcell(x, y),
-            "[2, 1]": self.map.getcell(x+1, y),
-            "[0, 2]": self.map.getcell(x-1, y+1),
-            "[1, 2]": self.map.getcell(x, y+1),
-            "[2, 2]": self.map.getcell(x+1, y+1),
+            "[0, 0]": self.map.getcell(x-1, y-1).json(),
+            "[1, 0]": self.map.getcell(x, y-1).json(),
+            "[2, 0]": self.map.getcell(x+1, y-1).json(),
+            "[0, 1]": self.map.getcell(x-1, y).json(),
+            "[1, 1]": self.map.getcell(x, y).json(),
+            "[2, 1]": self.map.getcell(x+1, y).json(),
+            "[0, 2]": self.map.getcell(x-1, y+1).json(),
+            "[1, 2]": self.map.getcell(x, y+1).json(),
+            "[2, 2]": self.map.getcell(x+1, y+1).json(),
             
             },
             "characters" : self.characters,
             "num_locations" : len(self.locations)
         }
-        return json_map
+
+        return json.dumps(json_map)
 
 
         
