@@ -5,6 +5,9 @@ import LoadingPage from './loadingPage';
 import { Backpack2 } from 'react-bootstrap-icons';
 import InventoryModal from '../modals/inventoryModal';
 
+
+type MapKey = '[0, 0]' | '[1, 0]' | '[2, 0]' | '[0, 1]' | '[1, 1]' | '[2, 1]' | '[0, 2]' | '[1, 2]' | '[2, 2]';
+
 function MainPage() {
     const [loading, setLoading] = useState(true);
     const [isTyping, setIsTyping] = useState(false);
@@ -18,6 +21,7 @@ function MainPage() {
 
         return () => clearTimeout(timer);
     }, []);
+
 
     return (
         <div className="main-page-container">
