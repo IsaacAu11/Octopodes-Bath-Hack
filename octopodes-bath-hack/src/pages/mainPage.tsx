@@ -4,9 +4,9 @@ import './mainPage.css';
 import LoadingPage from './loadingPage';
 import { Backpack2 } from 'react-bootstrap-icons';
 import InventoryModal from '../modals/inventoryModal';
-
-import { processMessage } from '../components/ChatProcessor';
 import currentMap from '../assets/map/currentMap.json';
+import AsciiArt from '../AsciiArt';
+import DialogueModal from '../modals/dialogueModal';
 
 type MapKey = '[0, 0]' | '[1, 0]' | '[2, 0]' | '[0, 1]' | '[1, 1]' | '[2, 1]' | '[0, 2]' | '[1, 2]' | '[2, 2]';
 
@@ -15,12 +15,14 @@ function MainPage() {
     const [isTyping, setIsTyping] = useState(false);
     const [showInventory, setShowInventory] = useState(false);
     const [dialogueHistory, setDialogueHistory] = useState<{ text: string; sender: string }[]>([]);
-    const [isProcessing, setIsProcessing] = useState(false);
+    const [character, setCharacter] = useState<{ name: string; imageURL: string } | null>(null);
+    const [showDialogueModal, setShowDialogueModal] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoading(false);
-        }, 1000);
+        }, 2000);
+
         return () => clearTimeout(timer);
     }, []);
 
@@ -40,44 +42,22 @@ function MainPage() {
         }
         return grid;
     };
-    const handleMessageSend = async (inputValue: string) => {
-        setIsProcessing(true);
-        try {
-            const { response, keywords } = await processMessage(inputValue);
-            
-            // Add both user message and AI response to history
-            setDialogueHistory(prev => [
-                ...prev,
-                { text: inputValue, sender: 'User' },
-                { text: response, sender: 'AI' }
-            ]);
 
-            // keywords array is available here
-            console.log('Extracted keywords:', keywords);
-            // [
-            //   ["character1", "character2"], Characters (index 0)
-            //   ["location1", "location2"],   Locations (index 1)
-            //   ["eventType1", "eventType2"], Event types (index 2)
-            //   ["item1", "item2"]            Items (index 3)
-            // ]
-
-            // TODO: Implement the keywords into the game
-
-        } catch (error) {
-            console.error('Error processing message:', error);
-        } finally {
-            setIsProcessing(false);
-        }
+    const handleDialogueClick = (character: string, imageURL: string) => {
+        setCharacter({ name: character, imageURL });
+        setShowDialogueModal(true);
     };
 
     return (
         <div className="main-page-container">
             <div className="navbar">
+                {/* Inventory button + modal */}
                 {!showInventory && 
                     <div className="navbar-item" onClick={() => setShowInventory(true)}>
                         <Backpack2 size={40} color="#a8a8a8" />
                     </div>
                 }
+
                 {showInventory && <InventoryModal onClose={() => setShowInventory(false)} />}
             </div>
 
@@ -88,21 +68,22 @@ function MainPage() {
             )}
 
             <div className="center-container">
+
                 <h1 className="location-title">You are at: {currentMap['[1, 1]']?.locationName || 'Unknown...'}</h1>
 
                 <div className="side-list">
                     <p className="side-list-title">Characters</p>
-                    <div className="side-list-item">
+                    <div className="side-list-item" onClick={() => handleDialogueClick("John the Pirate", "https://media.istockphoto.com/id/500081100/photo/portrait-of-handsome-man-in-a-pirate-costume.jpg?s=612x612&w=0&k=20&c=9OMffCTusV-wovYnuolcZ0tgpc_4sR8wY2r2vlJOnPw=")}>
                         John
                     </div>
-                    <div className="side-list-item">
+                    <div className="side-list-item" onClick={() => handleDialogueClick("Sarah the Merchant", "https://pics.craiyon.com/2023-06-02/2f06130136ca4d9197864bdb53f2111b.webp")}>
                         Sarah
                     </div>
                     <div className="side-list-item">
                         Mark
                     </div>
                 </div>
-
+                
                 <div className="grid-container">
                     {renderGrid()}
                 </div>
@@ -130,24 +111,36 @@ function MainPage() {
                     </div>
                 </div>
 
-                {!showInventory && (
+                {/* {(!showDialogueModal || !showInventory) && (
                     <input
                         type="text"
                         className="input"
-                        placeholder={isProcessing ? "Processing..." : "Dialogue"}
-                        onKeyDown={async (e) => {
+                        placeholder="Dialogue"
+                        onKeyDown={(e) => {
                             if (e.key === 'Enter') {
-                                const inputValue = (e.target as HTMLInputElement).value.trim();
-                                if (inputValue) {
-                                    (e.target as HTMLInputElement).value = '';
-                                    await handleMessageSend(inputValue);
+                                const inputValue = (e.target as HTMLInputElement).value;
+                                if (inputValue.trim()) {
+                                    setDialogueHistory((prev) => [
+                                        ...prev,
+                                        { text: inputValue, sender: 'User' },
+                                    ]);
+                                    (e.target as HTMLInputElement).value = ''; 
                                 }
                             }
                         }}
                         onFocus={() => setIsTyping(true)}
                         onBlur={() => setIsTyping(false)}
-                        disabled={isProcessing}
                     />
+                )} */}
+                {showDialogueModal ? (
+                    <DialogueModal onClose={() => {
+                        setCharacter(null);
+                        setShowDialogueModal(false);
+                    }} 
+                    character={character}
+                    />
+                ) : (
+                    <div />
                 )}
             </div>
         </div>
