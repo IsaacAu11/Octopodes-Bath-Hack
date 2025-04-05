@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './frontPage.css';
-import { processMessage } from '../components/ChatProcessor';
+import { initalPromptProcessing } from '../components/InitialPrompProcessing';
 
 function FrontPage({ onEnter }: { onEnter: () => void }) {
     const [isOnFrontPage, setIsOnFrontPage] = useState(true);
@@ -9,7 +9,7 @@ function FrontPage({ onEnter }: { onEnter: () => void }) {
     const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             e.preventDefault();
-            const result = await processMessage(userInput);
+            const result = await initalPromptProcessing(userInput);
             console.log('ChatGPT Response:', result);
             setIsOnFrontPage(false);
             setTimeout(() => {

@@ -1,13 +1,5 @@
 import OpenAI from 'openai';
 
-interface ImportMetaEnv {
-  readonly VITE_OPENAI_API_KEY: string
-}
-
-interface ImportMeta {
-  readonly env: ImportMetaEnv
-}
-
 interface StoryCharacter {
   name: string;
   occupation: string;
@@ -15,10 +7,6 @@ interface StoryCharacter {
 
 interface Location {
   locationName: string;
-  position: {
-    x: number;
-    y: number;
-  };
   description: string;
 }
 
@@ -37,14 +25,14 @@ export async function initalPromptProcessing(message: string): Promise<StoryElem
     });
 
     const systemPrompt = `Given the user's story prompt, generate:
-1. Characters: Each with a name and occupation
-2. Locations: Each with a name, x/y coordinates (between 0-100), and a brief description
+1. Exactly 30 Characters: Each with a name and occupation
+2. Exactly 30 Locations: Each with a name, x/y coordinates (between 0-100), and a brief description
 3. An interesting storyline that connects these elements
 
 Format the response as a valid JSON object with this exact structure:
 {
-  "characters": [["name", "occupation"], ...],
-  "locations": [["locationName", [x, y], "description"], ...],
+  "characters": [["name", "occupation"], ...] (exactly 30 entries),
+  "locations": [["locationName", "description"], ...] (exactly 30 entries),
   "storyline": "the story narrative"
 }`;
 
@@ -66,13 +54,9 @@ Format the response as a valid JSON object with this exact structure:
         name: char[0],
         occupation: char[1]
       })),
-      locations: response.locations.map((loc: [string, [number, number], string]) => ({
+      locations: response.locations.map((loc: [string, string]) => ({
         locationName: loc[0],
-        position: {
-          x: loc[1][0],
-          y: loc[1][1]
-        },
-        description: loc[2]
+        description: loc[1]
       })),
       storyline: response.storyline
     };
