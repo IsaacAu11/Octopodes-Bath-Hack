@@ -1,9 +1,10 @@
 // mainPage.tsx
-import { useEffect, useState } from 'react';
+import {useState } from 'react';
 import './mainPage.css';
 import { Backpack2, Book } from 'react-bootstrap-icons';
 import InventoryModal from '../modals/inventoryModal';
 import currentMap from '../assets/map/currentMap.json';
+//import AsciiArt from '../components/AsciiArt';
 import DialogueModal from '../modals/dialogueModal';
 import StoryLineModal from '../modals/storyLineModal';
 import CombatModal from '../modals/combatModal';

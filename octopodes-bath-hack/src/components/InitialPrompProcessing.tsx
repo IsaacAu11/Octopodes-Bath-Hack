@@ -8,6 +8,7 @@ interface StoryCharacter {
 interface Location {
   locationName: string;
   description: string;
+  characters: string[];
 }
 
 interface StoryElements {
@@ -25,14 +26,17 @@ export async function initalPromptProcessing(message: string): Promise<StoryElem
     });
 
     const systemPrompt = `Given the user's story prompt, generate:
-1. Exactly 30 Characters: Each with a name and occupation
-2. Exactly 30 Locations: Each with a name, x/y coordinates (between 0-100), and a brief description
+1. Characters each with a name and occupation but make sure there are a minimum of 10 characters, you must ensure that the characters are unique and not more than 2 characters in each location
+2. Exactly 15 Locations: Each with a name and a brief description and a list of characters that are associated with it (between 0 and 2 characters each)
 3. An interesting storyline that connects these elements
+
+If the users story prompt doesn't have enough information, make up a story, characters and locations that sticks to a consistent theme and connects the characters to the locations.
+If the users story prompt is a specific character from well know media then still make up a story, characters and locations with the minimum of 10 characters and a maximum of 30 characters and minimum of 15 locations that sticks to a consistent theme and connects the characters to the locations.
 
 Format the response as a valid JSON object with this exact structure:
 {
-  "characters": [["name", "occupation"], ...] (exactly 30 entries),
-  "locations": [["locationName", "description"], ...] (exactly 30 entries),
+  "characters": [["name", "occupation"], ...] (make sure that the characters are unique and not more than 2 characters in each location),
+  "locations": [["locationName", "description", [character1, character2, ...]], ...] (between 0 and 2 characters in each location, MAKE SURE THAT THE CHARACTERS ARE NOT IN MORE THAN ONE LOCATION),
   "storyline": "the story narrative"
 }`;
 
@@ -54,9 +58,10 @@ Format the response as a valid JSON object with this exact structure:
         name: char[0],
         occupation: char[1]
       })),
-      locations: response.locations.map((loc: [string, string]) => ({
+      locations: response.locations.map((loc: [string, string, string[]]) => ({
         locationName: loc[0],
-        description: loc[1]
+        description: loc[1],
+        characters: loc[2]
       })),
       storyline: response.storyline
     };
