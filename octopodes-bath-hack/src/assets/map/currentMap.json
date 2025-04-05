@@ -1,9 +1,7 @@
 {
     "[0, 0]": {
-        "locationName": "",
-        "description": "",
-        "characters": list of characters with their gender, occupation, 
-
+        "locationName": "A",
+        "information": ""
     },
     "[1, 0]": {
         "locationName": "B",
