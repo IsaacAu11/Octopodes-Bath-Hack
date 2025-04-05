@@ -1,0 +1,38 @@
+{
+    "[0, 0]": {
+        "locationName": "A",
+        "information": ""
+    },
+    "[1, 0]": {
+        "locationName": "B",
+        "information": ""
+    },
+    "[2, 0]": {
+        "locationName": "C",
+        "information": ""
+    },
+    "[0, 1]": {
+        "locationName": "D",
+        "information": ""
+    },
+    "[1, 1]": {
+        "locationName": "Spawn",
+        "information": ""
+    },
+    "[2, 1]": {
+        "locationName": "E",
+        "information": ""
+    },
+    "[0, 2]": {
+        "locationName": "F",
+        "information": ""
+    },
+    "[1, 2]": {
+        "locationName": "G",
+        "information": ""
+    },
+    "[2, 2]": {
+        "locationName": "H",
+        "information": ""
+    }
+}
