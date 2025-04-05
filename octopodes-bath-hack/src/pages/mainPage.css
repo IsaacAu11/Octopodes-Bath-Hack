@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@100;300;400;500;700;800;900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Pixelify+Sans:wght@400..700&family=Underdog&display=swap');
+
+
+.main-page-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+}
+
+.input {
+    width: 40rem;
+    height: 2rem;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    background-color: #373737;
+    color: white;
+    font-size: 1rem;
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+.content.hidden {
+    visibility: hidden;
+}
+
+.title {
+    font-size: 4.5rem;
+    margin-bottom: 10rem;
+    font-family: 'Pixelify Sans', sans-serif;
+    user-select: none;
+    top: 1rem;
+}
+
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #242424;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
