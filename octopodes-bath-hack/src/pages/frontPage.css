@@ -15,12 +15,27 @@
     position: relative;
 }
 
-.title {
-    font-size: 4.5rem;
+.front-page-title {
+    font-size: 3rem;
     font-family: 'Pixelify Sans', sans-serif;
     transition: transform 1s ease-in-out, opacity 1s ease-in-out;
     user-select: none;
-    margin-bottom: 2rem;
+    margin-bottom: 8rem;
+    animation: bounce 2s infinite ease-in-out;
+}
+
+.front-page-title.on-front-page {
+    transform: translateY(-150vh);
+    opacity: 0;
+}
+
+.game-name {
+    font-size: 10rem;
+    font-family: 'Pixelify Sans', sans-serif;
+    transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+    user-select: none;
+    position: absolute;
+    top: 5%;
     animation: bounce 2s infinite ease-in-out;
 }
 
@@ -33,10 +48,6 @@
     }
 } */
 
-.title.on-front-page {
-    transform: translateY(-150vh);
-    opacity: 0;
-}
 
 .input {
     width: 40rem;
@@ -46,6 +57,7 @@
     background-color: #373737;
     color: white;
     font-size: 1rem;
+    font-family: 'Pixelify Sans', sans-serif;
 }
 
 .input-container {
@@ -57,4 +69,15 @@
 .input-container.on-front-page {
     transform: translateY(150vh);
     opacity: 0;    
+}
+
+.credits {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5rem;
+    color: #848484;
+    font-family: 'Pixelify Sans', sans-serif;
+    user-select: none;
 }
