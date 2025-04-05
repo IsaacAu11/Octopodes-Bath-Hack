@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import FrontPage from './pages/frontPage';
 import MainPage from './pages/mainPage';
-import LoadingPage from './pages/loadingPage';
 
 function App() {
   const [pageIndex, setPageIndex] = useState("frontPage");
