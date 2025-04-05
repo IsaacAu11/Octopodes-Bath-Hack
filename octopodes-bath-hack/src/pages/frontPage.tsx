@@ -1,8 +1,6 @@
 // FrontPage.tsx
 import { useState } from 'react';
 import './frontPage.css';
-import TestAscii from '../TestAscii';
-function FrontPage() {
 
 function FrontPage({ onEnter }: { onEnter: () => void }) {
     const [isOnFrontPage, setIsOnFrontPage] = useState(true);
@@ -20,19 +18,21 @@ function FrontPage({ onEnter }: { onEnter: () => void }) {
     return (
         <>  
             <div className="container">
-                <h1 className={`title ${isOnFrontPage ? '' : 'on-front-page'}`} >Start your story:</h1>
+                <h1 className="game-name" >GAME NAME</h1>
+                <h1 className={`front-page-title ${isOnFrontPage ? '' : 'on-front-page'}`} >Start your story:</h1>
+                <div className={`input-container ${isOnFrontPage ? '' : 'on-front-page'}`}>
+                    <input 
+                        type="text" 
+                        className={`input ${isOnFrontPage ? '' : 'on-front-page'}`} 
+                        placeholder="Describe your story..." 
+                        onKeyDown={handleKeyDown}
+                        
+                    />
+                </div>
 
-            <input 
-                type="text" 
-                className={`input ${isOnFrontPage ? '' : 'on-front-page'}`} 
-                placeholder="Enter your story here..." 
-                onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                        setIsOnFrontPage(false);
-                        e.preventDefault();
-                    }
-                }
-            />
+                <p className="credits">
+                    Credits: Nathan Wong, Isaac Au, Oliver Claussnitzer-Brown
+                </p>
             </div>
         </>
     );
