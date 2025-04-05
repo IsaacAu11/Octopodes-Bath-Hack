@@ -6,6 +6,7 @@ import InventoryModal from '../modals/inventoryModal';
 import currentMap from '../assets/map/currentMap.json';
 import DialogueModal from '../modals/dialogueModal';
 import StoryLineModal from '../modals/storyLineModal';
+import CombatModal from '../modals/combatModal';
 
 type MapKey = '[0, 0]' | '[1, 0]' | '[2, 0]' | '[0, 1]' | '[1, 1]' | '[2, 1]' | '[0, 2]' | '[1, 2]' | '[2, 2]';
 
@@ -13,6 +14,7 @@ function MainPage() {
     // const [isTyping, setIsTyping] = useState(false);
     const [showInventory, setShowInventory] = useState(false);
     const [showStoryLine, setShowStoryLine] = useState(true);
+    const [showCombat, setShowCombat] = useState(false);
     // const [dialogueHistory, setDialogueHistory] = useState<{ text: string; sender: string }[]>([]);
     const [character, setCharacter] = useState<{ name: string; imageURL: string } | null>(null);
     const [showDialogueModal, setShowDialogueModal] = useState(false);
@@ -31,8 +33,9 @@ function MainPage() {
             for (let x = 0; x < 3; x++) {
                 const key = `[${x}, ${y}]`;
                 const cell = currentMap[key as MapKey];
+                const isCenterCell = x === 1 && y === 1;
                 grid.push(
-                    <div className="grid-cell" key={key}>
+                    <div className={isCenterCell ? "center-grid-cell" : "grid-cell"} key={key}>
                         <div className="cell-location">{cell?.locationName}</div>
                         <div className="cell-travel">{cell?.information}</div>
                     </div>
@@ -96,7 +99,7 @@ function MainPage() {
 
                 <div className="side-list">
                     <p className="side-list-title">Actions</p>
-                    <div className="side-list-item">
+                    <div className="side-list-item" onClick={() => setShowCombat(true)}>
                         Fight
                     </div>
                     <div className="side-list-item">
@@ -140,6 +143,7 @@ function MainPage() {
                 )}
 
                 {showStoryLine ? (<StoryLineModal onClose={() => {setShowStoryLine(false)}} />) : (<div />)}
+                {showCombat ? (<CombatModal onClose={() => {setShowCombat(false)}} />) : (<div />)}
 
             </div>
         </div>

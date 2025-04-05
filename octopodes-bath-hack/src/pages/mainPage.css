@@ -141,6 +141,29 @@
     font-family: 'Pixelify Sans', sans-serif;
 }
 
+.center-grid-cell {
+    background-color: #1a1a1a;
+    border: 2px solid #343434;
+    border-radius: 8px;
+    padding: 8px;
+    color: #e0e0e0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    font-size: 14px;
+
+    width: 10rem;
+    height: 10rem;
+    box-sizing: border-box;
+    transition: background-color 0.2s, border 0.2s;
+
+    font-family: 'Pixelify Sans', sans-serif;
+}
+
 .grid-cell:hover {
     background-color: #2a2a2a;
     cursor: pointer;
@@ -149,7 +172,7 @@
 
 .grid-cell:hover::before {
     content: "Go to";
-    color: #656565;
+    color: #949494;
     font-size: 1.3rem;
     display: block;
 }
