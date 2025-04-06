@@ -40,7 +40,7 @@ class FullNode(Node):
         self.location = location
 
     def json(self):
-        print(self.x, self.y)
+        #print(self.x, self.y)
         if self.location is not None:
             newjson = {
                 "location" : self.location[0],
@@ -60,7 +60,7 @@ class EmptyNode(Node):
     def is_empty(self):
         return True
     def json(self):
-        print(self.x, self.y)
+        #print(self.x, self.y)
         location = {"location" : "",
                     "description" : "",
                     "characters" : []}
@@ -79,7 +79,7 @@ class Map():
         
         self.map[4][4] = FullNode(4, 4)
     def getcell(self, x,y):
-        print(x + self.cols_added_left, y + self.rows_added_above)
+        #print(x + self.cols_added_left, y + self.rows_added_above)
         return self.map[x + self.cols_added_left][y + self.rows_added_above]
     def cartesian_to_index(self, x, y):
         return x + self.cols_added_left, y + self.rows_added_above
@@ -132,6 +132,7 @@ class Map():
         ix, iy = self.cartesian_to_index(x, y)
         print(xadj + ix , yadj + iy)
         self.map[xadj + ix][yadj + iy] = node"""
+        print(ix, iy)
         self.map[ix][iy] = node
 
     def get_map(self):
@@ -208,7 +209,11 @@ class NodeGenerator():
             if newY == h:
                 map.add_col_below()
             print(newX, newY)
+            newX, newY = get_adjustment(location)
+            newX += x
+            newY += y
             if location in locations_to_place:
+                print("placed in", x, y)
                 map.placenode(x, y, location, FullNode(newX, newY,))
             else:
                 map.placenode(x,y, location, EmptyNode(newX, newY))
@@ -242,11 +247,13 @@ class Game():
         self.current_x += changeX
         self.current_y += changeY
         currentCell = self.map.getcell(self.current_x, self.current_y)
-        NodeGenerator.generate_nodes(self.map, currentCell)
+        
         if currentCell.get_discovered():
             print("cell is discovered")
             return self.return_state(self.current_x, self.current_y)
         else:
+            print("not")
+            NodeGenerator.generate_nodes(self.map, currentCell)
             num = random.randint(0, len(self.locations) - 1)
             currentCell.discover(self.locations[num])
             self.locations.pop(num)
