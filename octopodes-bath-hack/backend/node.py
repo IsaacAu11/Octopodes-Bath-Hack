@@ -164,8 +164,8 @@ class NodeGenerator():
         num = 0
         if num_spaces > 0:
             num = random.randint(1, num_spaces)
-        #locations_to_place = random.sample(placable_nodes, num)
-        locations_to_place = random.sample(placable_nodes, 4)
+        locations_to_place = random.sample(placable_nodes, num)
+        #locations_to_place = random.sample(placable_nodes, 4)
         print(locations_to_place)
         for location in placable_nodes:
             print(location)
@@ -188,6 +188,8 @@ class Game():
         self.map = Map()
         
     def start(self, locations, characters):
+        self.current_x = 4
+        self.current_y = 4
         self.locations = locations
         print(self.locations)
         self.characters = characters
@@ -200,7 +202,9 @@ class Game():
         return self.return_state(4, 4)
 
     def move(self, changeX, changeY):
-        currentCell = self.map.getcell(self.current_x + changeX, self.current_y + changeY)
+        self.current_x += changeX
+        self.current_y += changeY
+        currentCell = self.map.getcell(self.current_x, self.current_y)
         NodeGenerator.generate_nodes(self.map, currentCell)
         if currentCell.get_discovered():
             return self.return_state(currentCell)
@@ -208,7 +212,7 @@ class Game():
             num = random.randint(0, len(self.locations) - 1)
             currentCell.discover(self.locations[num])
             self.locations.pop(num)
-            return self.return_state(currentCell)
+            return self.return_state(self.current_x, self.current_y)
 
                     
     def return_state(self, x, y):
