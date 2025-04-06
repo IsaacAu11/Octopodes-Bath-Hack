@@ -23,6 +23,7 @@
     user-select: none;
     margin-bottom: 8rem;
     animation: bounce 2s infinite ease-in-out;
+    z-index: 1001;
 }
 
 .front-page-title.loading {
@@ -37,10 +38,9 @@
     user-select: none;
     position: absolute;
     top: 5%;
-    animation: bounce 2s infinite ease-in-out;
 }
-
-/* @keyframes bounce {
+/* 
+@keyframes bounce {
     0%, 100% {
         transform: scale(1);
     }
@@ -81,4 +81,19 @@
     color: #848484;
     font-family: 'Pixelify Sans', sans-serif;
     user-select: none;
+}
+
+.front-page-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.front-page-overlay.focused {
+    opacity: 1;
 }
