@@ -1,50 +1,49 @@
 {
-    "locations": {
-      "[0, 0]": null,
-      "[1, 0]": null,
-      "[2, 0]": {
-        "location": "",
-        "description": "",
-        "characters": []
-      },
-      "[0, 1]": null,
-      "[1, 1]": [
-        "Moonlight Cafe",
-        "Cozy cafe known for its homemade pastries and live music nights",
-        [
-          "Elena",
-          "Nathan"
-        ]
-      ],
-      "[2, 1]": null,
-      "[0, 2]": {
-        "location": "",
-        "description": "",
-        "characters": []
-      },
-      "[1, 2]": {
-        "location": "",
-        "description": "",
-        "characters": []
-      },
-      "[2, 2]": {
-        "location": "",
-        "description": "",
-        "characters": []
-      }
+  "locations": {
+    "[0, 0]": null,
+    "[1, 0]": null,
+    "[2, 0]": {
+      "location": "",
+      "description": "",
+      "characters": []
     },
-    "characters": [
-      ["Elena", "Chef"],
-      ["Marco", "Detective"],
-      ["Sophie", "Librarian"],
-      ["Nathan", "Artist"],
-      ["Lila", "Botanist"],
-      ["Finn", "Pilot"],
-      ["Aria", "Journalist"],
-      ["Leo", "Professor"],
-      ["Mila", "Archaeologist"],
-      ["Lucas", "Surgeon"]
+    "[0, 1]": null,
+    "[1, 1]": [
+      "Moonlight Cafe",
+      "Cozy cafe known for its homemade pastries and live music nights",
+      [
+        "Elena",
+        "Nathan"
+      ]
     ],
-    "num_locations": 14
-  }
-  
+    "[2, 1]": null,
+    "[0, 2]": {
+      "location": "",
+      "description": "",
+      "characters": []
+    },
+    "[1, 2]": {
+      "location": "",
+      "description": "",
+      "characters": []
+    },
+    "[2, 2]": {
+      "location": "",
+      "description": "",
+      "characters": []
+    }
+  },
+  "characters": [
+    ["Elena", "Chef"],
+    ["Marco", "Detective"],
+    ["Sophie", "Librarian"],
+    ["Nathan", "Artist"],
+    ["Lila", "Botanist"],
+    ["Finn", "Pilot"],
+    ["Aria", "Journalist"],
+    ["Leo", "Professor"],
+    ["Mila", "Archaeologist"],
+    ["Lucas", "Surgeon"]
+  ],
+  "num_locations": 14
+}
