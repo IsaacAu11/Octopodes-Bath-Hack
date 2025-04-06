@@ -78,14 +78,11 @@ Format the response as a valid JSON object with this exact structure:
     };
     
     console.log("Backend payload:", backendPayload);
-    
-
-    console.log("Backend payload:", backendPayload);
 
     const backendResponse = await fetch("http://127.0.0.1:8000/start", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(backendPayload)
+      body: JSON.stringify(backendPayload)
     });
   
     const data = await backendResponse.json();
@@ -96,7 +93,10 @@ Format the response as a valid JSON object with this exact structure:
       throw new Error(`Backend error: ${backendResponse.statusText}`);
     }
 
-    localStorage.setItem('storyline', storyElements.storyline);
+    localStorage.setItem('currentMap', JSON.stringify(data));
+
+    const currentMap = JSON.parse(localStorage.getItem('currentMap') || '{}');
+    console.log("Retrieved currentMap:", currentMap);
 
     return storyElements;
 

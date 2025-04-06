@@ -188,6 +188,9 @@ class Game():
         self.map = Map()
         
     def start(self, locations, characters):
+        self.current_x = 4
+        self.current_y = 4
+        self.map = Map()
         self.locations = locations
         print(self.locations)
         self.characters = characters
