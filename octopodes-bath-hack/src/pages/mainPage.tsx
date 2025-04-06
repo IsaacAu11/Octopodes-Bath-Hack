@@ -1,5 +1,5 @@
 // mainPage.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './mainPage.css';
 import { Backpack2, Book } from 'react-bootstrap-icons';
 import InventoryModal from '../modals/inventoryModal';
@@ -11,6 +11,7 @@ import { searchImage } from '../components/ImageSearch';
 // import currentMap from '../assets/map/currentMap.json';
 
 type MapKey = '[0, 0]' | '[1, 0]' | '[2, 0]' | '[0, 1]' | '[1, 1]' | '[2, 1]' | '[0, 2]' | '[1, 2]' | '[2, 2]';
+type MoveKey = '[-1, -1]' | '[0, -1]' | '[1, -1]' | '[-1, 0]' | '[0,0]' | '[1, 0]' | '[-1, 1]' | '[0, 1]' | '[1, 1]';
 
 interface StoryCharacter {
     name: string;
@@ -36,6 +37,8 @@ function MainPage() {
     const [showDialogueModal, setShowDialogueModal] = useState(false);
     const storedCurrentMap = localStorage.getItem('currentMap');
     const currentMap = storedCurrentMap ? JSON.parse(JSON.parse(storedCurrentMap)) : null;
+    const [x, setX] = useState(0)
+    const [y, setY] = useState(0);
     
 
     console.log("Current Map:", currentMap);
@@ -67,7 +70,16 @@ function MainPage() {
                 const information = cell && typeof cell === 'object' && 'description' in cell ? cell.description : "No description available";
     
                 grid.push(
-                    <div className={isCenterCell ? "center-grid-cell" : "grid-cell"} key={key}>
+                    <div  
+                        className={isCenterCell ? "center-grid-cell" : "grid-cell"} 
+                        key={key} 
+                        onClick={async () => {
+                            const moveX = x - 1;
+                            const moveY = y - 1;
+    
+                            const moveKey: MoveKey = `[${moveX}, ${moveY}]` as MoveKey;
+                            await fetchMoveToGrid(moveKey);
+                        }}>
                         <div className="cell-location">{locationName}</div>
                         {/* <div className="cell-travel">{information}</div> */}
                     </div>
@@ -76,7 +88,56 @@ function MainPage() {
         }
         return grid;
     };
-    
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch('http://127.0.0.1:8000/test');
+            const data = await response.json();
+            console.log("Response from backend:", data);
+        };
+        fetchData();
+    }, [showInventory]);
+
+    const fetchMoveToGrid = async (moveKey: MoveKey) => {
+        // Mapping the moveKey to a relative change in coordinates
+        const moveMap: { [key in MoveKey]: [number, number] } = {
+            '[-1, -1]': [-1, -1],
+            '[0, -1]': [0, -1],
+            '[1, -1]': [1, -1],
+            '[-1, 0]': [-1, 0],
+            '[0,0]': [0, 0],
+            '[1, 0]': [1, 0],
+            '[-1, 1]': [-1, 1],
+            '[0, 1]': [0, 1],
+            '[1, 1]': [1, 1],
+        };
+
+        // Get the movement direction
+        const [dx, dy] = moveMap[moveKey];
+
+        // Update the current position
+        const newX = x + dx;
+        const newY = y + dy;
+
+        const response = await fetch(`http://127.0.0.1:8000/move?x=${newX}&y=${newY}`, {
+            method: "POST",
+            headers: {
+                "Accept": "application/json"
+            },
+            credentials: 'include'
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log("New Map Data:", data);
+            // Save the new map to localStorage
+            localStorage.setItem('currentMap', JSON.stringify(data));
+
+            // Update the state for the new position
+            setX(newX);
+            setY(newY);
+        }
+    };
 
     return (
         <div className="main-page-container">
