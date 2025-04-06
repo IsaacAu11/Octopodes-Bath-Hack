@@ -70,6 +70,7 @@ Format the response as a valid JSON object with this exact structure:
     };
 
     console.log("OpenAI JSON response:", storyElements);
+    localStorage.setItem('storyline', storyElements.storyline);
 
     const backendPayload = {
       characters: storyElements.characters.map(char => [char.name, char.occupation]),
