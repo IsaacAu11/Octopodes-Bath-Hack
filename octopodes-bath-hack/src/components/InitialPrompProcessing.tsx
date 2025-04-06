@@ -29,8 +29,8 @@ export async function initalPromptProcessing(message: string): Promise<StoryElem
     });
 
     const systemPrompt = `Given the user's story prompt, generate:
-1. Characters each with a name and occupation but make sure there are a minimum of 10 characters, you must ensure that the characters are unique and not more than 2 characters in each location
-2. Exactly 15 Locations: Each with a name and a brief description and a list of characters that are associated with it (between 0 and 2 characters each)
+1. Characters each with a name and occupation but make sure there are a minimum of 10 characters, you must ensure that the characters are unique and not more than 3 characters in each location
+2. Exactly 15 Locations: Each with a name and a brief description and a list of characters that are associated with it (between 0 and 3 characters each)
 3. An interesting storyline that connects these elements
 
 If the users story prompt doesn't have enough information, make up a story, characters and locations that sticks to a consistent theme and connects the characters to the locations.
@@ -38,8 +38,8 @@ If the users story prompt is a specific character from well know media then stil
 
 Format the response as a valid JSON object with this exact structure:
 {
-  "characters": [["name", "occupation"], ...] (make sure that the characters are unique and not more than 2 characters in each location),
-  "locations": [["locationName", "description", [character1, character2, ...]], ...] (between 0 and 2 characters in each location, MAKE SURE THAT THE CHARACTERS ARE NOT IN MORE THAN ONE LOCATION),
+  "characters": [["name", "occupation"], ...] (make sure that the characters are unique and not more than 3 characters in each location),
+  "locations": [["locationName", "description", [character1, character2, character3]], ...] (between 0 and 3 characters in each location, MAKE SURE THAT THE CHARACTERS ARE NOT IN MORE THAN ONE LOCATION),
   "storyline": "the story narrative"
 }`;
 
@@ -64,7 +64,7 @@ Format the response as a valid JSON object with this exact structure:
       locations: response.locations.map((loc: [string, string, string[]]) => ({
         locationName: loc[0],
         description: loc[1],
-        characters: loc[2]
+        characters: loc[2] ? loc[2].slice(0, 3) : []
       })),
       storyline: response.storyline
     };
@@ -76,7 +76,7 @@ Format the response as a valid JSON object with this exact structure:
       locations: storyElements.locations.map(loc => [
         loc.locationName,
         loc.description,
-        loc.characters
+        loc.characters.slice(0, 3)
       ])
     };
     

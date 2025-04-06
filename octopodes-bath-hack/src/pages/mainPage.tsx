@@ -161,8 +161,9 @@ function MainPage() {
             </h1>
                 <div className="side-list">
                     <p className="side-list-title">Characters</p>
-                    {currentMap?.characters.length > 0 ? (
-                        currentMap.characters.map(([name, occupation]: [string, string], index: number) => {
+                    {currentMap?.locations['[1, 1]']?.characters?.length > 0 ? (
+                        // Limit to maximum 3 characters per location
+                        currentMap.locations['[1, 1]'].characters.slice(0, 3).map((name: string, index: number) => {
                             const char = getCharacterDetails(name, currentMap.characters);
                             return (
                                 <div 

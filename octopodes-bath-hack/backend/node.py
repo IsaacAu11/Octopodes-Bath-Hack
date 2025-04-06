@@ -42,10 +42,13 @@ class FullNode(Node):
     def json(self):
         #print(self.x, self.y)
         if self.location is not None:
+            # Limit characters to a maximum of 3 per location
+            characters = self.location[2][:3] if self.location[2] and len(self.location[2]) > 3 else self.location[2]
+            
             newjson = {
                 "location" : self.location[0],
-                        "description" : self.location[1],
-                        "characters" : self.location[2]
+                "description" : self.location[1],
+                "characters" : characters
             }
         else:
             newjson = None
@@ -61,9 +64,12 @@ class EmptyNode(Node):
         return True
     def json(self):
         #print(self.x, self.y)
-        location = {"location" : "",
-                    "description" : "",
-                    "characters" : []}
+        # Create an empty location with no characters but maintain the structure
+        location = {
+            "location" : "",
+            "description" : "",
+            "characters" : []
+        }
         return location
     def _str_(self):
         return "Empty"
@@ -232,7 +238,19 @@ class Game():
         self.map = Map()
         self.current_x = 50
         self.current_y = 50
-        self.locations = locations
+        
+        # Ensure each location has max 3 characters
+        limited_locations = []
+        for loc in locations:
+            # Check if this is a location with characters
+            if len(loc) > 2 and isinstance(loc[2], list):
+                # Limit characters to 3 per location
+                characters_limited = loc[2][:3] if len(loc[2]) > 3 else loc[2]
+                limited_locations.append([loc[0], loc[1], characters_limited])
+            else:
+                limited_locations.append(loc)
+                
+        self.locations = limited_locations
 
         print(self.locations)
         self.characters = characters
