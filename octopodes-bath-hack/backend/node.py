@@ -71,13 +71,13 @@ class EmptyNode(Node):
 class Map():
     def __init__(self):
         self.map = []
-        for i in range(9):
-            self.map.append([None] * 9)
+        for i in range(100):
+            self.map.append([None] * 100)
         self.cols_added_left = 0
         
         self.rows_added_above = 0
         
-        self.map[4][4] = FullNode(4, 4)
+        self.map[50][50] = FullNode(50, 50)
     def getcell(self, x,y):
         #print(x + self.cols_added_left, y + self.rows_added_above)
         return self.map[x + self.cols_added_left][y + self.rows_added_above]
@@ -191,7 +191,7 @@ class NodeGenerator():
         if num_spaces > 0:
             num = random.randint(1, num_spaces)
         locations_to_place = random.sample(placable_nodes, num)
-        #locations_to_place = random.sample(placable_nodes, 4)
+        #locations_to_place = random.sample(placable_nodes, 4ooo)
         print(locations_to_place)
         for location in placable_nodes:
             """print(location)
@@ -222,16 +222,16 @@ class NodeGenerator():
 
 class Game():
     def __init__(self):
-        self.current_x = 4
-        self.current_y = 4
+        self.current_x = 50
+        self.current_y = 50
         self.locations = []
         self.characters = []
         self.map = None
         
     def start(self, locations, characters):
         self.map = Map()
-        self.current_x = 4
-        self.current_y = 4
+        self.current_x = 50
+        self.current_y = 50
         self.locations = locations
 
         print(self.locations)
@@ -249,8 +249,8 @@ class Game():
         self.current_x += changeX
         self.current_y += changeY
         currentCell = self.map.getcell(self.current_x, self.current_y)
-        
-        if currentCell.get_discovered():
+
+        if currentCell.location is not None:
             print("cell is discovered")
             return self.return_state(self.current_x, self.current_y)
         else:

@@ -60,11 +60,16 @@ function MainPage() {
 
     const renderGrid = () => {
         const grid = [];
-        for (let y = 0; y < 3; y++) {
-            for (let x = 0; x < 3; x++) {
-                const key = `[${x}, ${y}]`;
+        // Create a 3x3 grid
+        for (let row = 0; row < 3; row++) {
+            for (let col = 0; col < 3; col++) {
+                // Calculate relative movement coordinates
+                const dx = col - 1;  // -1, 0, or 1
+                const dy = row - 1;  // -1, 0, or 1
+                
+                const key = `[${col}, ${row}]`;
                 const cell = currentMap.locations[key as MapKey];
-                const isCenterCell = x === 1 && y === 1;
+                const isCenterCell = col === 1 && row === 1;
     
                 const locationName = cell && typeof cell === 'object' && 'location' in cell ? cell.location : "Undiscovered...";
                 const information = cell && typeof cell === 'object' && 'description' in cell ? cell.description : "No description available";
@@ -74,70 +79,38 @@ function MainPage() {
                         className={isCenterCell ? "center-grid-cell" : "grid-cell"} 
                         key={key} 
                         onClick={async () => {
-                            const moveX = x - 1;
-                            const moveY = y - 1;
-    
-                            const moveKey: MoveKey = `[${moveX}, ${moveY}]` as MoveKey;
-                            await fetchMoveToGrid(moveKey);
+                            await move(dx, dy);
                         }}>
                         <div className="cell-location">{locationName}</div>
-                        {/* <div className="cell-travel">{information}</div> */}
                     </div>
                 );
             }
         }
         return grid;
     };
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await fetch('http://127.0.0.1:8000/test');
+    
+    const move = async (dx: number, dy: number) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/move?x=${dx}&y=${dy}`, {
+                method: "POST",
+                headers: { "Accept": "application/json" },
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
             const data = await response.json();
-            console.log("Response from backend:", data);
-        };
-        fetchData();
-    }, [showInventory]);
-
-    const fetchMoveToGrid = async (moveKey: MoveKey) => {
-        // Mapping the moveKey to a relative change in coordinates
-        const moveMap: { [key in MoveKey]: [number, number] } = {
-            '[-1, -1]': [-1, -1],
-            '[0, -1]': [0, -1],
-            '[1, -1]': [1, -1],
-            '[-1, 0]': [-1, 0],
-            '[0,0]': [0, 0],
-            '[1, 0]': [1, 0],
-            '[-1, 1]': [-1, 1],
-            '[0, 1]': [0, 1],
-            '[1, 1]': [1, 1],
-        };
-
-        // Get the movement direction
-        const [dx, dy] = moveMap[moveKey];
-
-        // Update the current position
-        const newX = x + dx;
-        const newY = y + dy;
-
-        const response = await fetch(`http://127.0.0.1:8000/move?x=${newX}&y=${newY}`, {
-            method: "POST",
-            headers: {
-                "Accept": "application/json"
-            },
-            credentials: 'include'
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            console.log("New Map Data:", data);
-            // Save the new map to localStorage
             localStorage.setItem('currentMap', JSON.stringify(data));
-
-            // Update the state for the new position
-            setX(newX);
-            setY(newY);
+            // Update the current position
+            setX(prevX => prevX + dx);
+            setY(prevY => prevY + dy);
+        } catch (error) {
+            console.error("Failed to move:", error);
+            alert("Failed to move. Check console for details.");
         }
     };
+    
 
     return (
         <div className="main-page-container">
