@@ -28,7 +28,7 @@ app.add_middleware(
 def start(request: StartRequest, instance: Game = Depends(get_game)):
     return instance.start(request.locations, request.characters)
 
-@app.get("/move")
+@app.post("/move")
 def move(x: int, y: int, instance: Game = Depends(get_game)):
     return instance.move(x, y)
     
