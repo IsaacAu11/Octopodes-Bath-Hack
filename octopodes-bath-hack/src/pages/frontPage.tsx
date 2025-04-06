@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './frontPage.css';
 import { initalPromptProcessing } from '../components/InitialPrompProcessing';
 import LoadingPage from './loadingPage';
-import AsciiRain from '../components/AsciiRain';
 
 
 function FrontPage({ onEnter }: { onEnter: () => void }) {
@@ -81,9 +80,7 @@ function FrontPage({ onEnter }: { onEnter: () => void }) {
 
     return (
         <>  
-            <div style={{position: "absolute"}}>
-                <AsciiRain />
-            </div>
+
 
             <div className="container">
                 {/* <div className={`front-page-overlay ${inputFocused ? 'focused' : ''}`} /> */}

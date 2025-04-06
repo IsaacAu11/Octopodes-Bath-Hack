@@ -38,10 +38,9 @@
     user-select: none;
     position: absolute;
     top: 5%;
-    animation: bounce 2s infinite ease-in-out;
 }
-
-/* @keyframes bounce {
+/* 
+@keyframes bounce {
     0%, 100% {
         transform: scale(1);
     }
