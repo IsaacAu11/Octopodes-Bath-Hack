@@ -66,6 +66,36 @@ Format the response as a valid JSON object with this exact structure:
       storyline: response.storyline
     };
 
+    console.log("OpenAI JSON response:", storyElements);
+
+    const backendPayload = {
+      characters: storyElements.characters.map(char => [char.name, char.occupation]),
+      locations: storyElements.locations.map(loc => [
+        loc.locationName,
+        loc.description,
+        loc.characters
+      ])
+    };
+    
+    console.log("Backend payload:", backendPayload);
+    
+
+    console.log("Backend payload:", backendPayload);
+
+    const backendResponse = await fetch("http://127.0.0.1:8000/start", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(backendPayload)
+    });
+  
+    const data = await backendResponse.json();
+    console.log("Backend JSON response:", data);
+    
+
+    if (!backendResponse.ok) {
+      throw new Error(`Backend error: ${backendResponse.statusText}`);
+    }
+
     localStorage.setItem('storyline', storyElements.storyline);
 
     return storyElements;
