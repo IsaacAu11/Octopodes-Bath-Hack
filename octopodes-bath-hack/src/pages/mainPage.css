@@ -179,7 +179,7 @@
 
 .cell-location {
     font-weight: bold;
-    font-size: 2rem;
+    font-size: 1rem; /* Set a specific font size */
 }
 
 .cell-info {

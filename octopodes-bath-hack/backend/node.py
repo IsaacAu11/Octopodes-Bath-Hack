@@ -279,4 +279,11 @@ class Game():
             "num_locations" : len(self.locations)
         }
         print(json.dumps(json_map))
+<<<<<<< HEAD
         return json.dumps(json_map)
+=======
+        return json.dumps(json_map)
+
+
+        
+>>>>>>> 7289045667124eb96ac7ff1c18a2fd06e21495fc

@@ -3,12 +3,12 @@ import { useState } from 'react';
 import './mainPage.css';
 import { Backpack2, Book } from 'react-bootstrap-icons';
 import InventoryModal from '../modals/inventoryModal';
-import currentMap from '../assets/map/currentMap.json';
 //import AsciiArt from '../components/AsciiArt';
 import DialogueModal from '../modals/dialogueModal';
 import StoryLineModal from '../modals/storyLineModal';
 import CombatModal from '../modals/combatModal';
 import { searchImage } from '../components/ImageSearch';
+// import currentMap from '../assets/map/currentMap.json';
 
 type MapKey = '[0, 0]' | '[1, 0]' | '[2, 0]' | '[0, 1]' | '[1, 1]' | '[2, 1]' | '[0, 2]' | '[1, 2]' | '[2, 2]';
 
@@ -34,6 +34,11 @@ function MainPage() {
     // const [dialogueHistory, setDialogueHistory] = useState<{ text: string; sender: string }[]>([]);
     const [character, setCharacter] = useState<{ name: string; imageURL: string } | null>(null);
     const [showDialogueModal, setShowDialogueModal] = useState(false);
+    const storedCurrentMap = localStorage.getItem('currentMap');
+    const currentMap = storedCurrentMap ? JSON.parse(JSON.parse(storedCurrentMap)) : null;
+    
+
+    console.log("Current Map:", currentMap);
 
     // useEffect(() => {
     //     const timer = setTimeout(() => {
@@ -55,18 +60,23 @@ function MainPage() {
         for (let y = 0; y < 3; y++) {
             for (let x = 0; x < 3; x++) {
                 const key = `[${x}, ${y}]`;
-                const cell = currentMap[key as MapKey];
+                const cell = currentMap.locations[key as MapKey];
                 const isCenterCell = x === 1 && y === 1;
+    
+                const locationName = cell && typeof cell === 'object' && 'location' in cell ? cell.location : "Undiscovered...";
+                const information = cell && typeof cell === 'object' && 'description' in cell ? cell.description : "No description available";
+    
                 grid.push(
                     <div className={isCenterCell ? "center-grid-cell" : "grid-cell"} key={key}>
-                        <div className="cell-location">{cell?.locationName}</div>
-                        <div className="cell-travel">{cell?.information}</div>
+                        <div className="cell-location">{locationName}</div>
+                        {/* <div className="cell-travel">{information}</div> */}
                     </div>
                 );
             }
         }
         return grid;
     };
+    
 
     return (
         <div className="main-page-container">
@@ -86,8 +96,9 @@ function MainPage() {
 
             <div className="center-container">
 
-                <h1 className="location-title">You are at: {currentMap['[1, 1]']?.locationName || 'Unknown...'}</h1>
-
+            <h1 className="location-title">
+                You are at: {currentMap.locations['[1, 1]'] && 'location' in currentMap.locations['[1, 1]'] ? currentMap.locations['[1, 1]']?.location : 'Unknown...'}
+            </h1>
                 <div className="side-list">
                     <p className="side-list-title">Characters</p>
                     {characters.map((char, index) => (

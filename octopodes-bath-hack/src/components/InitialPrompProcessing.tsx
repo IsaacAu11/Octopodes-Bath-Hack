@@ -17,7 +17,7 @@ interface StoryElements {
   storyline: string;
 }
 
-export async function initalPromptProcessing(message: string): Promise<StoryElements> {
+export async function initalPromptProcessing(message: string): Promise<StoryElements> {  
   try {
     // Store the initial prompt in localStorage
     localStorage.setItem('initialPrompt', message);
@@ -81,25 +81,21 @@ Format the response as a valid JSON object with this exact structure:
     };
     
     console.log("Backend payload:", backendPayload);
-    
-
-    console.log("Backend payload:", backendPayload);
 
     const backendResponse = await fetch("http://127.0.0.1:8000/start", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(backendPayload)
+      body: JSON.stringify(backendPayload)
     });
   
     const data = await backendResponse.json();
     console.log("Backend JSON response:", data);
-    
 
     if (!backendResponse.ok) {
       throw new Error(`Backend error: ${backendResponse.statusText}`);
     }
 
-    localStorage.setItem('storyline', storyElements.storyline);
+    localStorage.setItem('currentMap', JSON.stringify(data));
 
     return storyElements;
 
