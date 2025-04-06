@@ -11,7 +11,7 @@ W = 6
 NW = 7
 """
 class Node():
-    def __init__(self, x, y):
+    def _init_(self, x, y):
         self.x = x
         self.y = y
         self.discovered = False
@@ -25,12 +25,12 @@ class Node():
         pass
     def json(self):
         pass
-    def __str__(self):
+    def _str_(self):
         pass
 
 class FullNode(Node):
-    def __init__(self, x, y, location = None):
-        super().__init__(x, y)
+    def _init_(self, x, y, location = None):
+        super()._init_(x, y)
         self.location = location
 
     def is_empty(self):
@@ -50,12 +50,12 @@ class FullNode(Node):
         else:
             newjson = None
         return newjson
-    def __str__(self):
+    def _str_(self):
         return str(self.location)
 
 class EmptyNode(Node):
-    def __init__(self, x, y, name=None, eventType=None, description=None):
-        super().__init__(x, y)
+    def _init_(self, x, y, name=None, eventType=None, description=None):
+        super()._init_(x, y)
         self.discovered = True
     def is_empty(self):
         return True
@@ -65,11 +65,11 @@ class EmptyNode(Node):
                     "description" : "",
                     "characters" : []}
         return location
-    def __str__(self):
+    def _str_(self):
         return "Empty"
 
 class Map():
-    def __init__(self):
+    def _init_(self):
         self.map = []
         for i in range(9):
             self.map.append([None] * 9)
@@ -104,7 +104,7 @@ class Map():
         if x < len(self.map[0])-self.cols_added_left-1:
             neighbours[2] = self.getcell(y,x+1)
         return neighbours
-    def __str__(self):
+    def _str_(self):
         s = ""
         for line in self.map:
             s += str(line) + "\n"
@@ -221,7 +221,7 @@ class NodeGenerator():
     
 
 class Game():
-    def __init__(self):
+    def _init_(self):
         self.current_x = 4
         self.current_y = 4
         self.locations = []
@@ -280,6 +280,3 @@ class Game():
         }
         print(json.dumps(json_map))
         return json.dumps(json_map)
-
-
-        
