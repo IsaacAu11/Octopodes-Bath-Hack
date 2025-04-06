@@ -84,16 +84,22 @@ Format the response as a valid JSON object with this exact structure:
 
     const backendResponse = await fetch("http://127.0.0.1:8000/start", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      credentials: 'include',
       body: JSON.stringify(backendPayload)
     });
+
+    if (!backendResponse.ok) {
+      const errorText = await backendResponse.text();
+      console.error('Backend error response:', errorText);
+      throw new Error(`Backend error: ${backendResponse.statusText}`);
+    }
   
     const data = await backendResponse.json();
     console.log("Backend JSON response:", data);
-
-    if (!backendResponse.ok) {
-      throw new Error(`Backend error: ${backendResponse.statusText}`);
-    }
 
     localStorage.setItem('currentMap', JSON.stringify(data));
 
