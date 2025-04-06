@@ -27,6 +27,7 @@ const characters: StoryCharacter[] = [
 
 function MainPage() {
     // const [isTyping, setIsTyping] = useState(false);
+    const setting = localStorage.getItem('setting');
     const [showInventory, setShowInventory] = useState(false);
     const [showStoryLine, setShowStoryLine] = useState(true);
     const [showCombat, setShowCombat] = useState(false);
@@ -43,7 +44,7 @@ function MainPage() {
     // }, []);
 
     const handleDialogueClick = async (char: StoryCharacter) => {
-        const searchTerm = `${char.occupation} ${char.name} fantasy portrait`;
+        const searchTerm = `${setting} ${char.occupation} portrait`;
         const imageURL = await searchImage(searchTerm);
         setCharacter({ name: char.name, imageURL });
         setShowDialogueModal(true);

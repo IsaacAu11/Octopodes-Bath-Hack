@@ -19,6 +19,9 @@ interface StoryElements {
 
 export async function initalPromptProcessing(message: string): Promise<StoryElements> {
   try {
+    // Store the initial prompt in localStorage
+    localStorage.setItem('initialPrompt', message);
+
     const client = new OpenAI({
       apiKey: import.meta.env.VITE_OPENAI_API_KEY,
       baseURL: "https://hack.funandprofit.ai/api/providers/openai/v1",
@@ -73,5 +76,40 @@ Format the response as a valid JSON object with this exact structure:
   } catch (error) {
     console.error('Error processing initial prompt:', error);
     throw new Error('Failed to process the story prompt');
+  }
+}
+
+export async function getSettingFromPrompt(): Promise<string> {
+  try {
+    const initialPrompt = localStorage.getItem('initialPrompt');
+    if (!initialPrompt) return '';
+
+    const client = new OpenAI({
+      apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+      baseURL: "https://hack.funandprofit.ai/api/providers/openai/v1",
+      dangerouslyAllowBrowser: true 
+    });
+
+    const systemPrompt = `Given the user's story prompt, identify the general setting or time period of the story. 
+If the prompt doesn't have enough information or a concrete setting, return an empty string.
+If there is a clear setting, describe it in a few words maximum.
+Format your response as a simple string, not JSON.`;
+
+    const completion = await client.chat.completions.create({
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: initialPrompt }
+      ],
+      model: "gpt-3.5-turbo",
+      temperature: 0.3,
+    });
+
+    const setting = completion.choices[0].message.content?.trim() || '';
+    localStorage.setItem('setting', setting);
+    return setting;
+
+  } catch (error) {
+    console.error('Error getting setting from prompt:', error);
+    return '';
   }
 } 
