@@ -72,7 +72,7 @@ function FrontPage({ onEnter }: { onEnter: () => void }) {
                 setLoading(true);
             }, 1000);
             const result = await initalPromptProcessing(userInput);
-            console.log('ChatGPT Response:', result);
+            console.log('OpenAI Response:', result);
             onEnter();
             setLoading(false);
         }
