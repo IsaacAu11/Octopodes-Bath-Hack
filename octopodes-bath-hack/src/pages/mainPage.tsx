@@ -1,5 +1,5 @@
 // mainPage.tsx
-import {useState } from 'react';
+import { useState } from 'react';
 import './mainPage.css';
 import { Backpack2, Book } from 'react-bootstrap-icons';
 import InventoryModal from '../modals/inventoryModal';
@@ -7,8 +7,22 @@ import InventoryModal from '../modals/inventoryModal';
 import DialogueModal from '../modals/dialogueModal';
 import StoryLineModal from '../modals/storyLineModal';
 import CombatModal from '../modals/combatModal';
+import { searchImage } from '../components/ImageSearch';
 
 type MapKey = '[0, 0]' | '[1, 0]' | '[2, 0]' | '[0, 1]' | '[1, 1]' | '[2, 1]' | '[0, 2]' | '[1, 2]' | '[2, 2]';
+
+interface StoryCharacter {
+    name: string;
+    occupation: string;
+}
+
+const characters: StoryCharacter[] = [
+    { name: "John the Pirate", occupation: "Medival Pirate Captain" },
+    { name: "Sarah the Merchant", occupation: "Medival Traveling Merchant" },
+    { name: "Mark the Traveler", occupation: "Medival Wandering Explorer" }
+];
+
+//todo: make it so chatgpt goes through the input prompt and returns the setting of the story
 
 function MainPage() {
     // const [isTyping, setIsTyping] = useState(false);
@@ -28,6 +42,13 @@ function MainPage() {
 
     //     return () => clearTimeout(timer);
     // }, []);
+
+    const handleDialogueClick = async (char: StoryCharacter) => {
+        const searchTerm = `${char.occupation} ${char.name} fantasy portrait`;
+        const imageURL = await searchImage(searchTerm);
+        setCharacter({ name: char.name, imageURL });
+        setShowDialogueModal(true);
+    };
 
     const renderGrid = () => {
         const grid = [];
@@ -51,11 +72,6 @@ function MainPage() {
         return grid;
     };
     
-
-    const handleDialogueClick = (character: string, imageURL: string) => {
-        setCharacter({ name: character, imageURL });
-        setShowDialogueModal(true);
-    };
 
     return (
         <div className="main-page-container">
@@ -84,15 +100,15 @@ function MainPage() {
 
                 <div className="side-list">
                     <p className="side-list-title">Characters</p>
-                    <div className="side-list-item" onClick={() => handleDialogueClick("John the Pirate", "https://media.istockphoto.com/id/500081100/photo/portrait-of-handsome-man-in-a-pirate-costume.jpg?s=612x612&w=0&k=20&c=9OMffCTusV-wovYnuolcZ0tgpc_4sR8wY2r2vlJOnPw=")}>
-                        John
-                    </div>
-                    <div className="side-list-item" onClick={() => handleDialogueClick("Sarah the Merchant", "https://pics.craiyon.com/2023-06-02/2f06130136ca4d9197864bdb53f2111b.webp")}>
-                        Sarah
-                    </div>
-                    <div className="side-list-item">
-                        Mark
-                    </div>
+                    {characters.map((char, index) => (
+                        <div 
+                            key={index}
+                            className="side-list-item" 
+                            onClick={() => handleDialogueClick(char)}
+                        >
+                            {char.name}
+                        </div>
+                    ))}
                 </div>
                 
                 <div className="grid-container">
@@ -144,11 +160,12 @@ function MainPage() {
                     />
                 )} */}
                 {showDialogueModal ? (
-                    <DialogueModal onClose={() => {
-                        setCharacter(null);
-                        setShowDialogueModal(false);
-                    }} 
-                    character={character}
+                    <DialogueModal 
+                        onClose={() => {
+                            setCharacter(null);
+                            setShowDialogueModal(false);
+                        }} 
+                        character={character}
                     />
                 ) : (
                     <div />
