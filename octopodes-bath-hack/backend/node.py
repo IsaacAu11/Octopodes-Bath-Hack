@@ -249,8 +249,8 @@ class Game():
         self.current_x += changeX
         self.current_y += changeY
         currentCell = self.map.getcell(self.current_x, self.current_y)
-        
-        if currentCell.get_discovered():
+
+        if currentCell.location is not None:
             print("cell is discovered")
             return self.return_state(self.current_x, self.current_y)
         else:
