@@ -1,9 +1,13 @@
 // loadingPage.tsx
 import './loadingPage.css';
+import AsciiRain from '../components/AsciiRain';
 
 function LoadingPage() {
     return (
         <>  
+            <div style={{position: "absolute"}}>
+                <AsciiRain />
+            </div>
             <div className="loading-container">
                 <div className="container-border">
                     <div className="bottom-left"></div>
