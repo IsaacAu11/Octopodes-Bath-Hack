@@ -1,38 +1,49 @@
 {
-    "[0, 0]": {
-        "locationName": "A",
-        "information": ""
-    },
-    "[1, 0]": {
-        "locationName": "B",
-        "information": ""
-    },
+  "locations": {
+    "[0, 0]": null,
+    "[1, 0]": null,
     "[2, 0]": {
-        "locationName": "C",
-        "information": ""
+      "location": "",
+      "description": "",
+      "characters": []
     },
-    "[0, 1]": {
-        "locationName": "D",
-        "information": ""
-    },
+    "[0, 1]": null,
     "[1, 1]": {
-        "locationName": "Spawn",
-        "information": ""
+      "location": "Moonlight Cafe",
+      "description": "Cozy cafe known for its homemade pastries and live music nights",
+      "characters": [
+        "Elena",
+        "Nathan"
+      ]
     },
-    "[2, 1]": {
-        "locationName": "E",
-        "information": ""
-    },
+    "[2, 1]": null,
     "[0, 2]": {
-        "locationName": "F",
-        "information": ""
+      "location": "",
+      "description": "",
+      "characters": []
     },
     "[1, 2]": {
-        "locationName": "G",
-        "information": ""
+      "location": "",
+      "description": "",
+      "characters": []
     },
     "[2, 2]": {
-        "locationName": "H",
-        "information": ""
+      "location": "",
+      "description": "",
+      "characters": []
     }
+  },
+  "characters": [
+    ["Elena", "Chef"],
+    ["Marco", "Detective"],
+    ["Sophie", "Librarian"],
+    ["Nathan", "Artist"],
+    ["Lila", "Botanist"],
+    ["Finn", "Pilot"],
+    ["Aria", "Journalist"],
+    ["Leo", "Professor"],
+    ["Mila", "Archaeologist"],
+    ["Lucas", "Surgeon"]
+  ],
+  "num_locations": 14
 }
