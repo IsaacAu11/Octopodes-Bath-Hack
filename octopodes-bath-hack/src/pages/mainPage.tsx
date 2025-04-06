@@ -8,6 +8,7 @@ import DialogueModal from '../modals/dialogueModal';
 import StoryLineModal from '../modals/storyLineModal';
 import CombatModal from '../modals/combatModal';
 import { searchImage } from '../components/ImageSearch';
+// import currentMap from '../assets/map/currentMap.json';
 
 type MapKey = '[0, 0]' | '[1, 0]' | '[2, 0]' | '[0, 1]' | '[1, 1]' | '[2, 1]' | '[0, 2]' | '[1, 2]' | '[2, 2]';
 
@@ -33,7 +34,10 @@ function MainPage() {
     const [character, setCharacter] = useState<{ name: string; imageURL: string } | null>(null);
     const [showDialogueModal, setShowDialogueModal] = useState(false);
     const storedCurrentMap = localStorage.getItem('currentMap');
-    const currentMap = storedCurrentMap ? JSON.parse(storedCurrentMap) : null;
+    const currentMap = storedCurrentMap ? JSON.parse(JSON.parse(storedCurrentMap)) : null;
+    
+
+    console.log("Current Map:", currentMap);
 
     // useEffect(() => {
     //     const timer = setTimeout(() => {
@@ -94,10 +98,6 @@ function MainPage() {
             <h1 className="location-title">
                 You are at: {currentMap.locations['[1, 1]'] && 'location' in currentMap.locations['[1, 1]'] ? currentMap.locations['[1, 1]']?.location : 'Unknown...'}
             </h1>
-                <div style={{userSelect: 'all'}}>
-                    {storedCurrentMap}
-                </div>
-
                 <div className="side-list">
                     <p className="side-list-title">Characters</p>
                     {characters.map((char, index) => (

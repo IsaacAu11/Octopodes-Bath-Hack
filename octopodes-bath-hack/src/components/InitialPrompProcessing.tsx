@@ -17,7 +17,7 @@ interface StoryElements {
   storyline: string;
 }
 
-export async function initalPromptProcessing(message: string): Promise<StoryElements> {
+export async function initalPromptProcessing(message: string): Promise<StoryElements> {  
   try {
     const client = new OpenAI({
       apiKey: import.meta.env.VITE_OPENAI_API_KEY,
@@ -87,16 +87,12 @@ Format the response as a valid JSON object with this exact structure:
   
     const data = await backendResponse.json();
     console.log("Backend JSON response:", data);
-    
 
     if (!backendResponse.ok) {
       throw new Error(`Backend error: ${backendResponse.statusText}`);
     }
 
     localStorage.setItem('currentMap', JSON.stringify(data));
-
-    const currentMap = JSON.parse(localStorage.getItem('currentMap') || '{}');
-    console.log("Retrieved currentMap:", currentMap);
 
     return storyElements;
 

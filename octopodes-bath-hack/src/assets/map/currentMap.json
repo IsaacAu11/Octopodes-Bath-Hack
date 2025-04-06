@@ -8,14 +8,14 @@
       "characters": []
     },
     "[0, 1]": null,
-    "[1, 1]": [
-      "Moonlight Cafe",
-      "Cozy cafe known for its homemade pastries and live music nights",
-      [
+    "[1, 1]": {
+      "location": "Moonlight Cafe",
+      "description": "Cozy cafe known for its homemade pastries and live music nights",
+      "characters": [
         "Elena",
         "Nathan"
       ]
-    ],
+    },
     "[2, 1]": null,
     "[0, 2]": {
       "location": "",
