@@ -1,5 +1,5 @@
 // mainPage.tsx
-import { useState, useEffect, useCallback, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './mainPage.css';
 import { Backpack2, Book } from 'react-bootstrap-icons';
 import InventoryModal from '../modals/inventoryModal';
@@ -63,56 +63,39 @@ function MainPage() {
     const [showDialogueModal, setShowDialogueModal] = useState(false);
     
     // Store map data in state instead of ref
-    const [mapData, setMapData] = useState<MapData | null>(null);
-    const [characters, setCharacters] = useState<StoryCharacter[]>([]);
+    const storedCurrentMap = localStorage.getItem('currentMap');
+    const currentMap = storedCurrentMap ? JSON.parse(JSON.parse(storedCurrentMap)) : null;
+    const [x, setX] = useState(0)
+    const [y, setY] = useState(0);
     
-    // Load map data on initial mount only
-    useEffect(() => {
-        const initialMapData = loadMapData();
-        if (initialMapData) {
-            setMapData(initialMapData);
-        }
-    }, []);
-    
-    // Update characters when map data changes
-    useEffect(() => {
-        if (!mapData) return;
-        
-        const currentLocation = mapData.locations['[1, 1]'];
-        if (currentLocation && currentLocation.characters && Array.isArray(currentLocation.characters)) {
-            const locationCharacters = currentLocation.characters.map((charName: string) => 
-                getCharacterDetails(charName, mapData.characters)
-            );
-            setCharacters(locationCharacters);
-        } else {
-            setCharacters([]);
-        }
-    }, [mapData]);
-    
-    // Callback to refresh map data that can be safely passed to child components
-    const refreshMapData = useCallback(() => {
-        const newMapData = loadMapData();
-        if (newMapData) {
-            setMapData(newMapData);
-        }
-    }, []);
+    console.log("Current Map:", currentMap);
 
+    // useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         setLoading(false);
+    //     }, 2000);
+
+    //     return () => clearTimeout(timer);
+    // }, []);
+    
     const handleDialogueClick = async (char: StoryCharacter) => {
         const searchTerm = `${setting} ${char.occupation} portrait`;
         const imageURL = await searchImage(searchTerm);
         setCharacter({ name: char.name, imageURL });
         setShowDialogueModal(true);
     };
-
     const renderGrid = () => {
-        if (!mapData) return [];
-        
         const grid = [];
-        for (let y = 0; y < 3; y++) {
-            for (let x = 0; x < 3; x++) {
-                const key = `[${x}, ${y}]`;
-                const cell = mapData.locations[key as MapKey];
-                const isCenterCell = x === 1 && y === 1;
+        // Create a 3x3 grid
+        for (let row = 0; row < 3; row++) {
+            for (let col = 0; col < 3; col++) {
+                // Calculate relative movement coordinates
+                const dx = col - 1;  // -1, 0, or 1
+                const dy = row - 1;  // -1, 0, or 1
+                
+                const key = `[${col}, ${row}]`;
+                const cell = currentMap.locations[key as MapKey];
+                const isCenterCell = col === 1 && row === 1;
     
                 const locationName = cell && typeof cell === 'object' && 'location' in cell ? cell.location : "Undiscovered...";
                 const information = cell && typeof cell === 'object' && 'description' in cell ? cell.description : "No description available";
@@ -153,7 +136,7 @@ function MainPage() {
             alert("Failed to move. Check console for details.");
         }
     };
-    
+
 
     return (
         <div className="main-page-container">
@@ -174,20 +157,23 @@ function MainPage() {
             <div className="center-container">
 
             <h1 className="location-title">
-                You are at: {mapData?.locations['[1, 1]'] && 'location' in mapData.locations['[1, 1]'] ? mapData.locations['[1, 1]']?.location : 'Unknown...'}
+                You are at: {currentMap?.locations['[1, 1]'] && 'location' in currentMap.locations['[1, 1]'] ? currentMap.locations['[1, 1]']?.location : 'Unknown...'}
             </h1>
                 <div className="side-list">
                     <p className="side-list-title">Characters</p>
-                    {characters.length > 0 ? (
-                        characters.map((char, index) => (
-                            <div 
-                                key={index}
-                                className="side-list-item" 
-                                onClick={() => handleDialogueClick(char)}
-                            >
-                                {char.name}
-                            </div>
-                        ))
+                    {currentMap?.characters.length > 0 ? (
+                        currentMap.characters.map(([name, occupation]: [string, string], index: number) => {
+                            const char = getCharacterDetails(name, currentMap.characters);
+                            return (
+                                <div 
+                                    key={index}
+                                    className="side-list-item" 
+                                    onClick={() => handleDialogueClick(char)}
+                                >
+                                    {char.name}
+                                </div>
+                            );
+                        })
                     ) : (
                         <div className="side-list-item-empty">No characters here</div>
                     )}
@@ -246,10 +232,10 @@ function MainPage() {
                         onClose={() => {
                             setCharacter(null);
                             setShowDialogueModal(false);
-                            refreshMapData();
+                            // refreshMapData(); // Removed as the function is not defined
                         }} 
                         character={character}
-                        mapData={mapData}
+                        mapData={currentMap}
                     />
                 ) : (
                     <div />
