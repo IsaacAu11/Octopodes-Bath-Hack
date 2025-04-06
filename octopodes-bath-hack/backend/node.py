@@ -41,7 +41,15 @@ class FullNode(Node):
 
     def json(self):
         print(self.x, self.y)
-        return self.location
+        if self.location is not None:
+            newjson = {
+                "location" : self.location[0],
+                        "description" : self.location[1],
+                        "characters" : self.location[2]
+            }
+        else:
+            newjson = None
+        return newjson
     def __str__(self):
         return str(self.location)
 
@@ -209,8 +217,8 @@ class NodeGenerator():
 
 class Game():
     def __init__(self):
-        self.current_x = 0
-        self.current_y = 0
+        self.current_x = 4
+        self.current_y = 4
         self.locations = []
         self.characters = []
         self.map = None
@@ -236,6 +244,7 @@ class Game():
         currentCell = self.map.getcell(self.current_x, self.current_y)
         NodeGenerator.generate_nodes(self.map, currentCell)
         if currentCell.get_discovered():
+            print("cell is discovered")
             return self.return_state(self.current_x, self.current_y)
         else:
             num = random.randint(0, len(self.locations) - 1)
@@ -262,7 +271,7 @@ class Game():
             "characters" : self.characters,
             "num_locations" : len(self.locations)
         }
-
+        print(json.dumps(json_map))
         return json.dumps(json_map)
 
 
